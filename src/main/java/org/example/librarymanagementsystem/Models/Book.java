@@ -1,4 +1,4 @@
-package org.example.librarymanagementsystem;
+package org.example.librarymanagementsystem.Models;
 
 public class Book {
     private String title;

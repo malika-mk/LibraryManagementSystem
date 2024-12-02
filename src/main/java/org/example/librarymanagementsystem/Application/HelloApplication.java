@@ -1,4 +1,4 @@
-package org.example.librarymanagementsystem;
+package org.example.librarymanagementsystem.Application;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

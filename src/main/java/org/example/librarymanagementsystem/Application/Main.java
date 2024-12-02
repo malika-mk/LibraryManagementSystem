@@ -1,4 +1,6 @@
-package org.example.librarymanagementsystem;
+package org.example.librarymanagementsystem.Application;
+
+import org.example.librarymanagementsystem.dao.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.SQLException;

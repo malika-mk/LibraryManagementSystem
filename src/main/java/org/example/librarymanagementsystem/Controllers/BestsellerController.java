@@ -1,4 +1,4 @@
-package org.example.librarymanagementsystem;
+package org.example.librarymanagementsystem.Controllers;
 
 public class BestsellerController {
 //    public void switchToBestseller() {

@@ -1,4 +1,6 @@
-package org.example.librarymanagementsystem;
+package org.example.librarymanagementsystem.Models;
+
+import org.example.librarymanagementsystem.dao.BookDAO;
 
 import java.util.List;
 

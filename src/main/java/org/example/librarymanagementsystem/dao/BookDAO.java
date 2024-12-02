@@ -1,4 +1,4 @@
-package org.example.librarymanagementsystem;
+package org.example.librarymanagementsystem.dao;
 
 import java.sql.*;
 import java.util.ArrayList;

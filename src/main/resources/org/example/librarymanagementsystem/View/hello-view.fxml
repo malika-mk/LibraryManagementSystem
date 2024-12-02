@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="2263.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanagementsystem.LibraryController">
+<ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="2263.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanagementsystem.Controllers.LibraryController">
    <content>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="2500.0" prefWidth="800.0" style="-fx-background-color: #5F4C4B;">
          <children>
@@ -192,7 +192,7 @@
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../images/_.jpeg" />
+                              <Image url="@../../../../images/_.jpeg" />
                            </image>
                         </ImageView>
                         <Label text="Name" textFill="WHITE">
@@ -215,7 +215,7 @@
                                  <children>
                                     <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../../images/_.jpeg" />
+                                          <Image url="@../../../../images/_.jpeg" />
                                        </image>
                                     </ImageView>
                                     <Label text="Name" textFill="WHITE">
@@ -237,7 +237,7 @@
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../images/Book.jpeg" />
+                              <Image url="@../../../../images/Book.jpeg" />
                            </image>
                         </ImageView>
                         <Label text="Name" textFill="WHITE">
@@ -256,7 +256,7 @@
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../images/Book.jpeg" />
+                              <Image url="@../../../../images/Book.jpeg" />
                            </image>
                         </ImageView>
                         <Label text="Name" textFill="WHITE">

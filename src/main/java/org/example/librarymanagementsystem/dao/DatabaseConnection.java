@@ -1,4 +1,4 @@
-package org.example.librarymanagementsystem;
+package org.example.librarymanagementsystem.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
