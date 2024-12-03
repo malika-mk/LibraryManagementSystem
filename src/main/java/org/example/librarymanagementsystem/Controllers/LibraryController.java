@@ -5,13 +5,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-import javafx.scene.control.Button;
 import org.example.librarymanagementsystem.Models.Book;
 import org.example.librarymanagementsystem.HelloApplication;
 
@@ -25,6 +22,41 @@ public class LibraryController {
 
     @FXML
     private Button bestsellerButton;
+
+    @FXML
+    private ChoiceBox<String> categoryChoiceBox;
+
+    @FXML
+    public void initialize() {
+
+        categoryChoiceBox.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
+        // Добавляем категории
+        categoryChoiceBox.getItems().addAll("Romance novel", "Fantasy", "Adventure fiction", "Horror");
+
+        // Устанавливаем начальное значение
+        categoryChoiceBox.setValue("Category");
+
+        // Добавляем обработчик выбора
+        categoryChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                switchToCategoryPage(newValue);
+            }
+        });
+    }
+
+    private void switchToCategoryPage(String category) {
+        try {
+            Stage stage = (Stage) categoryChoiceBox.getScene().getWindow();
+
+            // Загружаем FXML-файл для выбранной категории
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/librarymanagementsystem/view/Fantasy.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 800, 1000);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     void switchToBestseller() throws IOException {
@@ -52,19 +84,6 @@ public class LibraryController {
         }
 
 
-
-    }
-
-    @FXML
-    private Button HomeButton;
-
-    @FXML
-    void switchToHome() throws IOException {
-        Stage stage = (Stage) HomeButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/org/example/librarymanagementsystem/view/hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 1000);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
 
     }
 
