@@ -5,8 +5,8 @@ module org.example.librarymanagementsystem {
     requires java.desktop;
 
 
-    opens org.example.librarymanagementsystem to javafx.fxml;
-    exports org.example.librarymanagementsystem;
+//    opens org.example.librarymanagementsystem to javafx.fxml;
+//    exports org.example.librarymanagementsystem;
     exports org.example.librarymanagementsystem.Controllers;
     opens org.example.librarymanagementsystem.Controllers to javafx.fxml;
     exports org.example.librarymanagementsystem.Models;

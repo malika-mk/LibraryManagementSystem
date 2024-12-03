@@ -29,7 +29,7 @@ public class LibraryController {
     @FXML
     void switchToBestseller() throws IOException {
         Stage stage = (Stage) bestsellerButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("bestseller-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/org/example/librarymanagementsystem/View/bestseller-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 1000);
         stage.setTitle("Hello!");
         stage.setScene(scene);
