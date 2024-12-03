@@ -15,4 +15,6 @@ module org.example.librarymanagementsystem {
     opens org.example.librarymanagementsystem.dao to javafx.fxml;
     exports org.example.librarymanagementsystem.Application;
     opens org.example.librarymanagementsystem.Application to javafx.fxml;
+    exports org.example.librarymanagementsystem;
+    opens org.example.librarymanagementsystem to javafx.fxml;
 }

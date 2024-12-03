@@ -1,4 +1,4 @@
-package org.example.librarymanagementsystem.Application;
+package org.example.librarymanagementsystem;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +11,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                HelloApplication.class.getResource("/org/example/librarymanagementsystem/View/hello-view.fxml")
+                HelloApplication.class.getResource("/org/example/librarymanagementsystem/view/hello-view.fxml")
         );
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);

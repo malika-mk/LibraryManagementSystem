@@ -21,7 +21,7 @@
             <TextField layoutX="255.0" layoutY="65.0" prefWidth="300.0" promptText="Search..." />
             <ImageView fx:id="bannerImageView" fitHeight="262.0" fitWidth="658.0" layoutX="72.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../images/Снимок%20экрана%202024-12-01%20в%2013.18.51.png" />
+                  <Image url="@../../../../images/Снимок%20экрана%202024-12-01%20в%2013.18.51.png" />
                </image>
             </ImageView>
             <Button layoutX="618.0" layoutY="64.0" prefHeight="31.0" prefWidth="35.0" style="-fx-font-size: 16;" text="❤" />

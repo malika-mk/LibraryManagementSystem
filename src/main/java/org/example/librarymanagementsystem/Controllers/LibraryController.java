@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 import javafx.scene.control.Button;
 import org.example.librarymanagementsystem.Models.Book;
-import org.example.librarymanagementsystem.Application.HelloApplication;
+import org.example.librarymanagementsystem.HelloApplication;
 
 import java.io.IOException;
 
@@ -29,7 +29,7 @@ public class LibraryController {
     @FXML
     void switchToBestseller() throws IOException {
         Stage stage = (Stage) bestsellerButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/org/example/librarymanagementsystem/View/bestseller-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/org/example/librarymanagementsystem/view/bestseller-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 1000);
         stage.setTitle("Hello!");
         stage.setScene(scene);
@@ -42,7 +42,26 @@ public class LibraryController {
     @FXML
     void switchToBlog() throws IOException {
         Stage stage = (Stage) blogbutton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("blog.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/org/example/librarymanagementsystem/view/blog.fxml"));
+        try {
+            Scene scene = new Scene(fxmlLoader.load(), 800, 1000);
+            stage.setTitle("Hello!");
+            stage.setScene(scene);
+        } catch (IOException e) {
+            System.out.println(e.toString());
+        }
+
+
+
+    }
+
+    @FXML
+    private Button HomeButton;
+
+    @FXML
+    void switchToHome() throws IOException {
+        Stage stage = (Stage) HomeButton.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/org/example/librarymanagementsystem/view/hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 1000);
         stage.setTitle("Hello!");
         stage.setScene(scene);
