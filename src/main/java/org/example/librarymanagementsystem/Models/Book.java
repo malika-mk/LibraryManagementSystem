@@ -1,16 +1,16 @@
 package org.example.librarymanagementsystem.Models;
 
 public class Book {
-    private String title;
+    private String name;
     private String author;
 
-    public Book(String title, String author) {
-        this.title = title;
+    public Book(String name, String author) {
+        this.name = name;
         this.author = author;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
     public String getAuthor() {

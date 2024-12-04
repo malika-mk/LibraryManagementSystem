@@ -21,14 +21,15 @@
    <content>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="2500.0" prefWidth="800.0" style="-fx-background-color: #5F4C4B;">
          <children>
-            <TextField layoutX="255.0" layoutY="65.0" prefWidth="300.0" promptText="Search..." />
+            <TextField fx:id="searchField" layoutX="255.0" layoutY="65.0" prefWidth="300.0" promptText="Введите название книги" />
             <ImageView fx:id="bannerImageView" fitHeight="262.0" fitWidth="658.0" layoutX="72.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../images/Снимок%20экрана%202024-12-01%20в%2013.18.51.png" />
                </image>
             </ImageView>
-            <Button layoutX="618.0" layoutY="64.0" prefHeight="31.0" prefWidth="35.0" style="-fx-font-size: 16;" text="❤" />
-            <Button layoutX="663.0" layoutY="63.0" prefWidth="36.0" style="-fx-font-size: 16;" text="⭘" />
+            <Button layoutX="619.0" layoutY="63.0" prefHeight="31.0" prefWidth="36.0" style="-fx-font-size: 16;" text="❤" />
+            <Button fx:id="searchButton" layoutX="573.0" layoutY="63.0" onAction="#onSearchButtonClick" prefHeight="31.0" prefWidth="36.0" style="-fx-font-size: 16;" styleClass="circle-button" text="⭘" />
+            <VBox fx:id="searchResultsBox" alignment="CENTER" layoutX="185.0" layoutY="561.0" prefHeight="240.0" prefWidth="412.0" />
             <HBox alignment="CENTER" layoutX="-15.0" layoutY="1977.0" prefHeight="327.0" prefWidth="827.0" style="-fx-background-color: #2B2B2B;">
                <children>
                   <Label style="-fx-text-fill: white;" text="© 2024 Library" />
@@ -70,7 +71,7 @@
                   <Font size="30.0" />
                </font>
             </Label>
-            <GridPane alignment="CENTER" layoutX="53.0" layoutY="670.0" prefHeight="1426.0" prefWidth="704.0">
+            <GridPane fx:id="booksGrid" alignment="CENTER" layoutX="53.0" layoutY="670.0" prefHeight="1426.0" prefWidth="704.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.9285888671875" minWidth="10.0" prefWidth="181.9285888671875" />
@@ -84,7 +85,26 @@
                   <RowConstraints maxHeight="458.429443359375" minHeight="10.0" prefHeight="440.85791015625" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+                  <VBox fx:id="booksContainer" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../images/40%20best%20books%20to%20read%20before%20you%20die.jpeg" />
+                           </image>
+                        </ImageView>
+                        <Label text="Name" textFill="WHITE">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                        </Label>
+                        <Label text="Description" textFill="WHITE">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="contentBox" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -362,25 +382,6 @@
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../images/Fahrenheit%20451.jpeg" />
-                           </image>
-                        </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../images/40%20best%20books%20to%20read%20before%20you%20die.jpeg" />
                            </image>
                         </ImageView>
                         <Label text="Name" textFill="WHITE">

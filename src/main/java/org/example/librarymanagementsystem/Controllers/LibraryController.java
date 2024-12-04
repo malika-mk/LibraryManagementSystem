@@ -7,18 +7,29 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import org.example.librarymanagementsystem.Models.Book;
 import org.example.librarymanagementsystem.HelloApplication;
+import org.example.librarymanagementsystem.dao.DatabaseConnection;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class LibraryController {
 
-
     @FXML
     private ImageView bannerImageView;
+
+    @FXML
+    private GridPane booksGrid;
+
+    @FXML
+    private VBox searchResultsBox;
 
     @FXML
     private Button bestsellerButton;
@@ -27,8 +38,39 @@ public class LibraryController {
     private ChoiceBox<String> categoryChoiceBox;
 
     @FXML
-    public void initialize() {
+    private TextField searchField;
 
+    @FXML
+    private VBox contentBox; // Контейнер для отображения результатов
+
+    private ObservableList<Book> filteredList = FXCollections.observableArrayList();
+
+    @FXML
+    private Button searchButton; // Кнопка-кружок
+
+    @FXML
+    private void onSearchButtonClick() {
+        System.out.println("Кнопка нажата");
+        String searchText = searchField.getText().trim();
+        System.out.println("Текст поиска: " + searchText);
+
+        if (!searchText.isEmpty()) {
+            Book foundBook = searchBookByName(searchText);
+            if (foundBook != null) {
+                System.out.println("Книга найдена: " + foundBook.getName());
+                displaySearchResult(foundBook);
+            } else {
+                System.out.println("Книга не найдена");
+                displayNoResult();
+            }
+        } else {
+            System.out.println("Поле поиска пустое");
+            displayDefaultContent();
+        }
+    }
+
+    @FXML
+    public void initialize() {
         categoryChoiceBox.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
         // Добавляем категории
         categoryChoiceBox.getItems().addAll("Romance novel", "Fantasy", "Adventure fiction", "Horror");
@@ -42,6 +84,9 @@ public class LibraryController {
                 switchToCategoryPage(newValue);
             }
         });
+
+        // Обработка нажатия Enter в поле поиска
+        searchField.setOnAction(event -> onSearch());
     }
 
     private void switchToCategoryPage(String category) {
@@ -65,7 +110,6 @@ public class LibraryController {
         Scene scene = new Scene(fxmlLoader.load(), 800, 1000);
         stage.setTitle("Hello!");
         stage.setScene(scene);
-
     }
 
     @FXML
@@ -82,79 +126,107 @@ public class LibraryController {
         } catch (IOException e) {
             System.out.println(e.toString());
         }
-
-
-
     }
 
-    // Поле для ввода поиска
     @FXML
-    private TextField searchField;
-
-    // Таблица для отображения данных
-    @FXML
-    private TableView<Book> tableView;
-
-    // Столбцы для таблицы
-    @FXML
-    private TableColumn<Book, String> titleColumn;
+    private Button HomeButton;
 
     @FXML
-    private TableColumn<Book, String> authorColumn;
+    void switchToHome() throws IOException {
+        Stage stage = (Stage) HomeButton.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/org/example/librarymanagementsystem/view/hello-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 800, 1000);
+        stage.setTitle("Hello!");
+        stage.setScene(scene);
+    }
 
+    // Метод поиска
+    private void onSearch() {
+        String searchText = searchField.getText().trim();
+        if (searchText.isEmpty()) {
+            displayDefaultContent(); // Вернуть содержимое по умолчанию
+            return;
+        }
+        Book foundBook = searchBookByName(searchText);
+        if (foundBook != null) {
+            displaySearchResult(foundBook);
+        } else {
+            displayNoResult();
+        }
+    }
 
-    private ObservableList<Book> filteredList = FXCollections.observableArrayList();
+    private void displayNoResult() {
+        // Скрыть GridPane
+        booksGrid.setVisible(false);
+        booksGrid.setManaged(false);
 
-//    @FXML
-//    public void initialize() {
-//        if (bannerImageView != null) {
-//            // Убедитесь, что размеры ImageView установлены
-//            bannerImageView.setFitWidth(600);
-//            bannerImageView.setFitHeight(300);
+        // Показать VBox с сообщением о результате
+        searchResultsBox.setVisible(true);
+        searchResultsBox.setManaged(true);
+
+        searchResultsBox.getChildren().clear();
+        Label noResultLabel = new Label("Книга не найдена.");
+        noResultLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: red;");
+        searchResultsBox.getChildren().add(noResultLabel);
+    }
+
+    // Запрос к базе данных для поиска книги
+    private Book searchBookByName(String name) {
+        String query = "SELECT name, author FROM public.book WHERE name ILIKE ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, "%" + name + "%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String bookName = resultSet.getString("name");
+                String author = resultSet.getString("author");
+                return new Book(bookName, author);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+//    private void displayDefaultContent() {
+//        // Показать GridPane с популярными книгами
+//        booksGrid.setVisible(true);
+//        booksGrid.setManaged(true);
 //
-//            // Создаём прямоугольник для клипа
-//            Rectangle clip = new Rectangle();
-//            clip.setWidth(bannerImageView.getFitWidth());  // Устанавливаем ширину
-//            clip.setHeight(bannerImageView.getFitHeight()); // Устанавливаем высоту
-//            clip.setArcWidth(40); // Радиус скругления углов по ширине
-//            clip.setArcHeight(40); // Радиус скругления углов по высоте
-//
-//            // Применяем clip к ImageView
-//            bannerImageView.setClip(clip);
-//        }
-//   }
-//    private void filterList(String query) {
-//        if (query == null || query.isEmpty()) {
-//            tableView.setItems(bookList); // Показываем все книги, если строка пустая
-//        } else {
-//            filteredList.clear();
-//            for (Book book : bookList) {
-//                if (book.getTitle().toLowerCase().contains(query.toLowerCase())
-//                        || book.getAuthor().toLowerCase().contains(query.toLowerCase())) {
-//                    filteredList.add(book); // Добавляем книги, которые соответствуют запросу
-//                }
-//            }
-//            tableView.setItems(filteredList); // Устанавливаем отфильтрованный список
-//        }
+//        // Скрыть VBox с результатами поиска
+//        searchResultsBox.setVisible(false);
+//        searchResultsBox.setManaged(false);
 //    }
 
-//    public void switchScene(String fxmlFile) {
-//
-//        try {
-//            System.out.println("Switching to: " + fxmlFile); // Отладка
-//            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
-//            Scene newScene = new Scene(fxmlLoader.load());
-//            Stage currentStage = (Stage) searchField.getScene().getWindow();
-//            currentStage.setScene(newScene);
-//            System.out.println("Scene switched successfully to " + fxmlFile); // Отладка
-//        } catch (IOException e) {
-//            System.out.println("Failed to switch to scene: " + fxmlFile); // Отладка
-//            e.printStackTrace();
-//        }
-//    }
+    // Метод для отображения результатов поиска
+    private void displaySearchResult(Book book) {
+        // Скрыть GridPane с популярными книгами
+        booksGrid.setVisible(false);
+        booksGrid.setManaged(false);
 
-//    @FXML
-//    public void switchToBestseller() {
-//        switchScene("bestseller-view.fxml");
-//    }
+        // Показать VBox с результатами поиска
+        searchResultsBox.setVisible(true);
+        searchResultsBox.setManaged(true);
+
+        // Очистить старые результаты
+        searchResultsBox.getChildren().clear();
+
+        // Добавить результаты поиска
+        Label nameLabel = new Label("Название: " + book.getName());
+        nameLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+        Label authorLabel = new Label("Автор: " + book.getAuthor());
+        authorLabel.setStyle("-fx-font-size: 16px;");
+
+        searchResultsBox.getChildren().addAll(nameLabel, authorLabel); // Добавление в VBox
+    }
+
+    private void displayDefaultContent() {
+        // Реализация возврата к содержимому по умолчанию
+        contentBox.getChildren().clear();
+        Label defaultLabel = new Label("Популярное сейчас");
+        defaultLabel.setStyle("-fx-font-size: 18px;");
+        contentBox.getChildren().add(defaultLabel);
+        // Можно добавить логику отображения книг
+    }
 }
