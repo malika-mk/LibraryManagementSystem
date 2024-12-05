@@ -29,7 +29,10 @@
             </ImageView>
             <Button layoutX="619.0" layoutY="63.0" prefHeight="31.0" prefWidth="36.0" style="-fx-font-size: 16;" text="❤" />
             <Button fx:id="searchButton" layoutX="573.0" layoutY="63.0" onAction="#onSearchButtonClick" prefHeight="31.0" prefWidth="36.0" style="-fx-font-size: 16;" styleClass="circle-button" text="⭘" />
-            <VBox fx:id="searchResultsBox" alignment="CENTER" layoutX="185.0" layoutY="561.0" prefHeight="240.0" prefWidth="412.0" />
+            <VBox fx:id="searchResultsBox" alignment="CENTER" layoutX="189.0" layoutY="590.0" prefHeight="240.0" prefWidth="412.0">
+               <children>
+                  <ImageView fx:id="bookImageView" fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
+               </children></VBox>
             <HBox alignment="CENTER" layoutX="-15.0" layoutY="1977.0" prefHeight="327.0" prefWidth="827.0" style="-fx-background-color: #2B2B2B;">
                <children>
                   <Label style="-fx-text-fill: white;" text="© 2024 Library" />
@@ -61,7 +64,7 @@
                <font>
                   <Font size="20.0" />
                </font></Button>
-            <Label layoutX="71.0" layoutY="567.0" text="Popular Now" textFill="WHITE">
+            <Label fx:id="popularNowLabel" layoutX="71.0" layoutY="567.0" text="Popular Now" textFill="WHITE">
                <font>
                   <Font size="30.0" />
                </font>
@@ -146,7 +149,7 @@
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../../../../../Downloads/40%20best%20books%20to%20read%20before%20you%20die.jpeg" />
+                              <Image url="@../../../../../Downloads/40%20best%20books%20to%20read%20before%20you%20die.jpeg" />
                            </image>
                         </ImageView>
                         <Label text="Name" textFill="WHITE">
@@ -260,7 +263,8 @@
                                     </Label>
                                  </children>
                               </VBox>
-                           </children></VBox>
+                           </children>
+                        </VBox>
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3">

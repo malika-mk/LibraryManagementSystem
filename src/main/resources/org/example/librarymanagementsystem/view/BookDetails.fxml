@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.librarymanagementsystem.Controllers.BookDetailsController1"
-            prefHeight="400.0" prefWidth="600.0" >
-    <Label fx:id="titleLabel" text="Title" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
-    <Label fx:id="authorLabel" text="Author" style="-fx-font-size: 16px;"/>
-    <Label fx:id="descriptionLabel" text="Description" style="-fx-font-size: 14px;"/>
+<AnchorPane prefHeight="400.0" prefWidth="800.0" style="-fx-background-color: #5F4C4B;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanagementsystem.Controllers.BookDetailsController1">
+    <Label fx:id="titleLabel" layoutX="101.0" layoutY="50.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Title" textFill="WHITE" />
+    <Label fx:id="authorLabel" layoutX="101.0" layoutY="89.0" style="-fx-font-size: 16px;" text="Author" textFill="WHITE" />
+    <Label fx:id="descriptionLabel" layoutX="101.0" layoutY="123.0" style="-fx-font-size: 14px;" text="Description" textFill="WHITE" />
 
 </AnchorPane>

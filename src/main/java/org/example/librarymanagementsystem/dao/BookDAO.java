@@ -10,19 +10,21 @@ import java.sql.SQLException;
 public class BookDAO {
     // Метод для поиска книги по имени
     public Book searchBookByName(String name) {
-        String query = "SELECT name, author FROM public.book WHERE name ILIKE ?";
+        String query = "SELECT id, name, author FROM public.book WHERE name ILIKE ?";
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, "%" + name + "%");
-            ResultSet resultSet = preparedStatement.executeQuery();
+            statement.setString(1, "%" + name + "%");
+            ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
+                int id = resultSet.getInt("id"); // Получаем id
                 String bookName = resultSet.getString("name");
                 String author = resultSet.getString("author");
-                return new Book(bookName, author); // Убедитесь, что у вас есть класс Book с полями name и author
-            }
 
+                // Возвращаем объект Book с id, name и author
+                return new Book(id, bookName, author);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
