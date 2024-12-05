@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 
 public class GetImageFromBooks {
     public static javafx.scene.image.Image getImage(int bookId) {
-        String query = "SELECT image FROM books WHERE id = ?";
+        String query = "SELECT image FROM book WHERE id = ?";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -17,12 +17,16 @@ public class GetImageFromBooks {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                InputStream inputStream = resultSet.getBinaryStream("image");
-                return new javafx.scene.image.Image(inputStream); // Используем JavaFX Image
+                InputStream imageStream = resultSet.getBinaryStream("image");
+                if (imageStream != null) {
+                    return new javafx.scene.image.Image(imageStream);
+                } else {
+                    System.out.println("Изображение не найдено для книги с ID: " + bookId);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return null; // Если изображения нет, возвращаем null
     }
 }

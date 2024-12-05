@@ -250,13 +250,14 @@ public class LibraryController {
         Label authorLabel = new Label("Автор: " + book.getAuthor());
         authorLabel.setStyle("-fx-font-size: 16px;");
 
-        ImageView imageView = new ImageView(bookImage); // Отображаем изображение
-        imageView.setFitWidth(100);
-        imageView.setFitHeight(150);
+        ImageView bookImageView = new ImageView(bookImage);
+        bookImageView.setFitWidth(200); // Установите ширину
+        bookImageView.setFitHeight(300); // Установите высоту
+        bookImageView.setPreserveRatio(true);
 
-        VBox bookDetailsBox = new VBox(imageView, titleLabel, authorLabel);
+        VBox bookDetailsBox = new VBox(bookImageView, titleLabel, authorLabel);
         bookDetailsBox.setStyle("-fx-padding: 10px; -fx-border-color: black; -fx-border-width: 1; -fx-background-color: #f4f4f4;");
-        bookDetailsBox.setOnMouseClicked(event -> openBookDetailsPage(book));
+        bookDetailsBox.setSpacing(10);
 
         searchResultsBox.getChildren().add(bookDetailsBox);
         searchResultsBox.setVisible(true);
