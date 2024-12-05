@@ -30,4 +30,23 @@ public class BookDAO {
         }
         return null; // Если книга не найдена, возвращаем null
     }
+
+    // Метод для получения описания книги по ID
+    public String getBookDescription(int bookId) {
+        String query = "SELECT description FROM book WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, bookId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("description"); // Возвращаем описание
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Ошибка при извлечении описания книги: " + e.getMessage());
+        }
+        return null; // Если описание не найдено
+    }
 }

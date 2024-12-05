@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="400.0" prefWidth="800.0" style="-fx-background-color: #5F4C4B;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanagementsystem.Controllers.BookDetailsController1">
-    <Label fx:id="titleLabel" layoutX="101.0" layoutY="50.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Title" textFill="WHITE" />
-    <Label fx:id="authorLabel" layoutX="101.0" layoutY="89.0" style="-fx-font-size: 16px;" text="Author" textFill="WHITE" />
-    <Label fx:id="descriptionLabel" layoutX="101.0" layoutY="123.0" style="-fx-font-size: 14px;" text="Description" textFill="WHITE" />
+    <Label fx:id="titleLabel" layoutX="227.0" layoutY="55.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Title" textFill="WHITE" />
+    <Label fx:id="authorLabel" layoutX="227.0" layoutY="94.0" style="-fx-font-size: 16px;" text="Author" textFill="WHITE" />
+    <Label fx:id="descriptionLabel" layoutX="227.0" layoutY="128.0" style="-fx-font-size: 14px;" text="Description" textFill="WHITE" />
+   <ImageView fx:id="bookImageView" fitHeight="188.0" fitWidth="140.0" layoutX="68.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true" />
 
 </AnchorPane>
