@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.example.librarymanagementsystem.Models.Book;
 import org.example.librarymanagementsystem.HelloApplication;
+import org.example.librarymanagementsystem.dao.BookDAO;
 import org.example.librarymanagementsystem.dao.DatabaseConnection;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LibraryController {
+    private BookDAO bookDAO = new BookDAO();
 
     @FXML
     private ImageView bannerImageView;
@@ -58,13 +60,29 @@ public class LibraryController {
             Book foundBook = searchBookByName(searchText);
             if (foundBook != null) {
                 System.out.println("Книга найдена: " + foundBook.getName());
+
+                // Скрываем "Popular Now"
+                booksGrid.setVisible(false); // Скрыть GridPane
+                booksGrid.setManaged(false); // Убрать из компоновки
+
+                // Показываем результаты поиска
                 displaySearchResult(foundBook);
             } else {
                 System.out.println("Книга не найдена");
+
+                // Показываем "Popular Now", если результатов нет
+                booksGrid.setVisible(true);
+                booksGrid.setManaged(true);
+
                 displayNoResult();
             }
         } else {
             System.out.println("Поле поиска пустое");
+
+            // Восстанавливаем отображение "Popular Now"
+            booksGrid.setVisible(true);
+            booksGrid.setManaged(true);
+
             displayDefaultContent();
         }
     }
@@ -72,13 +90,14 @@ public class LibraryController {
     @FXML
     public void initialize() {
         categoryChoiceBox.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
+
         // Добавляем категории
         categoryChoiceBox.getItems().addAll("Romance novel", "Fantasy", "Adventure fiction", "Horror");
 
         // Устанавливаем начальное значение
         categoryChoiceBox.setValue("Category");
 
-        // Добавляем обработчик выбора
+        // Добавляем обработчик выбора категории
         categoryChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 switchToCategoryPage(newValue);
@@ -86,7 +105,21 @@ public class LibraryController {
         });
 
         // Обработка нажатия Enter в поле поиска
-        searchField.setOnAction(event -> onSearch());
+        searchField.setOnAction(event -> {
+            // Выполняем поиск только по нажатию Enter
+            onSearch();
+        });
+
+        // Слушатель изменений текста (только для валидации или дополнительных действий)
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                // Если поле поиска пустое, показываем секцию "Popular Now"
+                booksGrid.setVisible(true);
+                booksGrid.setManaged(true);
+                searchResultsBox.setVisible(false);
+                searchResultsBox.setManaged(false);
+            }
+        });
     }
 
     private void switchToCategoryPage(String category) {
@@ -142,16 +175,37 @@ public class LibraryController {
 
     // Метод поиска
     private void onSearch() {
-        String searchText = searchField.getText().trim();
-        if (searchText.isEmpty()) {
-            displayDefaultContent(); // Вернуть содержимое по умолчанию
+        String query = searchField.getText().trim();
+
+        if (query.isEmpty()) {
+            // Если поле поиска пустое, показываем дефолтное содержимое
+            System.out.println("Поле поиска пустое. Показать дефолтное содержимое.");
+            displayDefaultContent();
             return;
         }
-        Book foundBook = searchBookByName(searchText);
-        if (foundBook != null) {
-            displaySearchResult(foundBook);
-        } else {
-            displayNoResult();
+
+        System.out.println("Выполняется поиск книги с запросом: " + query);
+
+        try {
+            // Выполняем поиск книги
+            Book result = bookDAO.searchBookByName(query);
+
+            if (result != null) {
+                System.out.println("Книга найдена: " + result.getName());
+                // Скрываем популярное только если нашли результат
+                booksGrid.setVisible(false);
+                booksGrid.setManaged(false);
+                displaySearchResult(result);
+            } else {
+                System.out.println("Книга не найдена.");
+                // Скрываем популярное, если книги нет
+                booksGrid.setVisible(false);
+                booksGrid.setManaged(false);
+                displayNoResult();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Ошибка при выполнении поиска: " + e.getMessage());
         }
     }
 
@@ -200,25 +254,40 @@ public class LibraryController {
 
     // Метод для отображения результатов поиска
     private void displaySearchResult(Book book) {
-        // Скрыть GridPane с популярными книгами
-        booksGrid.setVisible(false);
-        booksGrid.setManaged(false);
-
-        // Показать VBox с результатами поиска
-        searchResultsBox.setVisible(true);
-        searchResultsBox.setManaged(true);
-
-        // Очистить старые результаты
         searchResultsBox.getChildren().clear();
 
-        // Добавить результаты поиска
-        Label nameLabel = new Label("Название: " + book.getName());
-        nameLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        Label titleLabel = new Label("Название: " + book.getName());
+        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
         Label authorLabel = new Label("Автор: " + book.getAuthor());
         authorLabel.setStyle("-fx-font-size: 16px;");
 
-        searchResultsBox.getChildren().addAll(nameLabel, authorLabel); // Добавление в VBox
+        VBox bookDetailsBox = new VBox(titleLabel, authorLabel);
+        bookDetailsBox.setStyle("-fx-padding: 10px; -fx-border-color: black; -fx-border-width: 1; -fx-background-color: #f4f4f4;");
+
+        // Добавляем обработчик клика
+        bookDetailsBox.setOnMouseClicked(event -> openBookDetailsPage(book));
+
+        searchResultsBox.getChildren().add(bookDetailsBox);
+        searchResultsBox.setVisible(true);
+        searchResultsBox.setManaged(true);
+    }
+
+    private void openBookDetailsPage(Book book) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanagementsystem/view/BookDetails.fxml"));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(loader.load()));
+
+            // Получаем контроллер нового окна
+            BookDetailsController1 controller = loader.getController();
+            controller.setBookDetails(book.getName(), book.getAuthor(), "Описание книги будет здесь.");
+
+            stage.setTitle("Детали книги");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void displayDefaultContent() {
@@ -229,4 +298,7 @@ public class LibraryController {
         contentBox.getChildren().add(defaultLabel);
         // Можно добавить логику отображения книг
     }
+
+
+
 }

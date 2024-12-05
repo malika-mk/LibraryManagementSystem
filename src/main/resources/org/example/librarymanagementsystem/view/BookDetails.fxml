@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.librarymanagementsystem.Controllers.BookDetailsController1"
+            prefHeight="400.0" prefWidth="600.0" >
+    <Label fx:id="titleLabel" text="Title" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+    <Label fx:id="authorLabel" text="Author" style="-fx-font-size: 16px;"/>
+    <Label fx:id="descriptionLabel" text="Description" style="-fx-font-size: 14px;"/>
+
+</AnchorPane>
