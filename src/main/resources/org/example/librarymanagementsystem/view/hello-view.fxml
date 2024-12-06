@@ -2,6 +2,7 @@
 
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
@@ -17,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="2263.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanagementsystem.Controllers.LibraryController">
+<ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="2456.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanagementsystem.Controllers.LibraryController">
    <content>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="2500.0" prefWidth="800.0" style="-fx-background-color: #5F4C4B;">
          <children>
@@ -33,7 +34,7 @@
                <children>
                   <ImageView fx:id="bookImageView" fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
                </children></VBox>
-            <HBox alignment="CENTER" layoutX="-15.0" layoutY="1977.0" prefHeight="327.0" prefWidth="827.0" style="-fx-background-color: #2B2B2B;">
+            <HBox alignment="CENTER" layoutX="-18.0" layoutY="2129.0" prefHeight="327.0" prefWidth="827.0" style="-fx-background-color: #2B2B2B;">
                <children>
                   <Label style="-fx-text-fill: white;" text="© 2024 Library" />
                </children>
@@ -88,335 +89,228 @@
                   <RowConstraints maxHeight="458.429443359375" minHeight="10.0" prefHeight="440.85791015625" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <VBox fx:id="booksContainer" prefHeight="200.0" prefWidth="100.0">
+                  <VBox fx:id="contentBox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../images/40%20best%20books%20to%20read%20before%20you%20die.jpeg" />
+                              <Image url="@../../../../images/Mobydi.jpeg" />
                            </image>
                         </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
-                  <VBox fx:id="contentBox" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../images/40%20best%20books%20to%20read%20before%20you%20die.jpeg" />
+                              <Image url="@../../../../images/Pride%20and.jpeg" />
                            </image>
                         </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../images/40%20best%20books%20to%20read%20before%20you%20die.jpeg" />
+                              <Image url="@../../../../images/1984.jpeg" />
                            </image>
                         </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../Downloads/40%20best%20books%20to%20read%20before%20you%20die.jpeg" />
+                              <Image url="@../../../../images/Crime%20and.jpeg" />
                            </image>
                         </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../images/40%20best%20books%20to%20read%20before%20you%20die.jpeg" />
+                              <Image url="@../../../../images/Peace%20and.jpeg" />
                            </image>
                         </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../images/40%20best%20books%20to%20read%20before%20you%20die.jpeg" />
+                              <Image url="@../../../../images/Fahrenheit%20451.jpeg" />
                            </image>
                         </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-                     <children>
-                        <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../images/Fahrenheit%20451.jpeg" />
-                           </image>
-                        </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../../images/_.jpeg" />
                            </image>
                         </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0">
-                                 <children>
-                                    <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../../../images/_.jpeg" />
-                                       </image>
-                                    </ImageView>
-                                    <Label text="Name" textFill="WHITE">
-                                       <font>
-                                          <Font size="25.0" />
-                                       </font>
-                                    </Label>
-                                    <Label text="Description" textFill="WHITE">
-                                       <font>
-                                          <Font size="25.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </VBox>
+                        <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../images/The%20Hobbit_%20The%20Desolation%20of%20Smaug%20---%20so%20excited%20to%20see%20it%20this%20December%2013th!.jpeg" />
+                           </image>
+                        </ImageView>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../../images/Book.jpeg" />
                            </image>
                         </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../images/Book.jpeg" />
+                              <Image url="@../../../../images/THE%20LORD%20OF%20THE%20RINGS_%20THE%20FELLOWSHIP%20OF%20THE%20RING,%20RUIZ%20BURGOS.jpeg" />
                            </image>
                         </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../images/40%20best%20books%20to%20read%20before%20you%20die.jpeg" />
+                              <Image url="@../../../../images/Romeo%20and.jpeg" />
                            </image>
                         </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../images/40%20best%20books%20to%20read%20before%20you%20die.jpeg" />
+                              <Image url="@../../../../images/The%20great%20g.jpeg" />
                            </image>
                         </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../images/40%20best%20books%20to%20read%20before%20you%20die.jpeg" />
+                              <Image url="@../../../../images/The%20catcher.jpeg" />
                            </image>
                         </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../images/40%20best%20books%20to%20read%20before%20you%20die.jpeg" />
+                              <Image url="@../../../../images/The%20Odyssey%20by%20Homer.jpeg" />
                            </image>
                         </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="3">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="3">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../images/Fahrenheit%20451.jpeg" />
+                              <Image url="@../../../../images/Homer’s%20Poems%20Importance.jpeg" />
                            </image>
                         </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
                      <children>
                         <ImageView fitHeight="188.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../images/Fahrenheit%20451.jpeg" />
+                              <Image url="@../../../../images/Harry%20Potter%20and%20the%20philosopher's%20stone.jpeg" />
                            </image>
                         </ImageView>
-                        <Label text="Name" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Label text="Description" textFill="WHITE">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="View">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                   </VBox>
                </children>

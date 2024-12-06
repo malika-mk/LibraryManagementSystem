@@ -16,10 +16,10 @@ public class Main {
                 System.out.println("Connection established!");
 
                 // Укажите путь к изображению, которое вы хотите добавить
-                File imageFile = new File("src/main/resources/images/1984.jpeg");
+                File imageFile = new File("src/main/resources/images/Peace and.jpeg");
 
                 // Сохранение изображения в базу данных для книги с ID 1
-                saveImage(connection, 1, imageFile);
+                saveImage(connection, 12, imageFile);
 
             } else {
                 System.out.println("Failed to connect to the database.");
