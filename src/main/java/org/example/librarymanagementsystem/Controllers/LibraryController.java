@@ -413,6 +413,24 @@ public class LibraryController {
         searchResultsBox.setManaged(false);
     }
 
+    @FXML private Button addBookButton;
+
+    // Метод для открытия окна добавления новой книги
+    @FXML
+    private void openAddBookWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanagementsystem/view/AddNewBook.fxml"));
+            Scene scene = new Scene(loader.load());
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Добавить книгу");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }

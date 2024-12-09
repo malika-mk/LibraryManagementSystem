@@ -7,13 +7,14 @@ public class Book {
     private String name;
     private String author;
     private String description; // Новое поле для описания
-    private Image image;
+    private Image image;  // Поле для изображения
 
     // Конструктор без изображения
     public Book(int id, String name, String author) {
         this.id = id;
         this.name = name;
         this.author = author;
+        this.image = null;  // Изображение по умолчанию не задано
     }
 
     // Конструктор с изображением

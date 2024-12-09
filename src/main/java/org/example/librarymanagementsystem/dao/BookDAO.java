@@ -49,4 +49,21 @@ public class BookDAO {
         }
         return null; // Если описание не найдено
     }
+
+    public void addBook(Book book) {
+        String query = "INSERT INTO book (name, author, description) VALUES (?, ?, ?)";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, book.getName());
+            statement.setString(2, book.getAuthor());
+            statement.setString(3, book.getDescription());
+
+            statement.executeUpdate();  // Выполняем запрос
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
