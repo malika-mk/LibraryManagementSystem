@@ -28,7 +28,7 @@
                   <Image url="@../../../../images/Снимок%20экрана%202024-12-01%20в%2013.18.51.png" />
                </image>
             </ImageView>
-            <Button layoutX="619.0" layoutY="63.0" prefHeight="31.0" prefWidth="36.0" style="-fx-font-size: 16;" text="❤" />
+            <Button fx:id="addBookButton" layoutX="619.0" layoutY="63.0" onAction="#openAddBookWindow" prefHeight="31.0" prefWidth="36.0" style="-fx-font-size: 16;" text="+" />
             <Button fx:id="searchButton" layoutX="573.0" layoutY="63.0" onAction="#onSearchButtonClick" prefHeight="31.0" prefWidth="36.0" style="-fx-font-size: 16;" styleClass="circle-button" text="⭘" />
             <VBox fx:id="searchResultsBox" alignment="CENTER" layoutX="189.0" layoutY="590.0" prefHeight="240.0" prefWidth="412.0">
                <children>
