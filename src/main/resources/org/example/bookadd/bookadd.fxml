@@ -2,21 +2,34 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
 
-<VBox alignment="CENTER" prefHeight="215.0" prefWidth="342.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.bookadd.Controllers.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
 
-    <Label fx:id="welcomeText" />
-    <VBox alignment="CENTER" spacing="10">
-        <TextField fx:id="titleField" promptText="Введите название книги" />
-        <TextField fx:id="authorField" promptText="Введите автора книги" />
-        <TextField fx:id="descriptionField" promptText="Введите описание книги" />
-        <TextField fx:id="genreField" promptText="Введите жанр книги" />
-        <TextField fx:id="priceField" promptText="Введите стоимость книги" />
-        <Button text="Добавить книгу" onAction="#onAddBookButtonClick" />
-    </VBox>
+<ScrollPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.bookadd.Controllers.HelloController">
+    <content>
+        <VBox alignment="CENTER" spacing="20.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
 
-    <Accordion />
-</VBox>
+            <!-- Поля для ввода данных -->
+            <TextField fx:id="titleField" promptText="Enter book title" />
+            <TextField fx:id="authorField" promptText="Enter author name" />
+            <TextField fx:id="descriptionField" promptText="Enter book description" />
+            <TextField fx:id="genreField" promptText="Enter book genre" />
+            <TextField fx:id="priceField" promptText="Enter book price" />
+            <TextField fx:id="imagePathField" promptText="Select image path" editable="false" />
+
+            <!-- Кнопки -->
+            <Button text="Select Image" onAction="#onSelectImage" />
+            <Button text="Add Book" onAction="#onAddBookButtonClick" />
+
+            <!-- Вывод книги -->
+            <Label text="Book Details:" />
+            <VBox fx:id="bookDisplay" spacing="10.0" alignment="CENTER">
+                <ImageView fx:id="bookImageView" fitWidth="500.0" fitHeight="700.0" />
+                <Label fx:id="bookDetails" />
+            </VBox>
+        </VBox>
+    </content>
+</ScrollPane>

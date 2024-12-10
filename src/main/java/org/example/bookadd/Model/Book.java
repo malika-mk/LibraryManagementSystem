@@ -1,23 +1,24 @@
 package org.example.bookadd.Model;
 
-
 public class Book {
     private String title;
     private String author;
     private String description;
     private String genre;
     private double price;
+    private String imagePath;  // Add a path to the image or use byte[] if storing the image as binary
 
-    // Конструктор
-    public Book(String title, String author, String description, String genre, double price) {
+    // Constructor
+    public Book(String title, String author, String description, String genre, double price, String imagePath) {
         this.title = title;
         this.author = author;
         this.description = description;
         this.genre = genre;
         this.price = price;
+        this.imagePath = imagePath;
     }
 
-    // Геттеры и сеттеры
+    // Getters and setters
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 
@@ -32,4 +33,7 @@ public class Book {
 
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
+
+    public String getImagePath() { return imagePath; }
+    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 }
