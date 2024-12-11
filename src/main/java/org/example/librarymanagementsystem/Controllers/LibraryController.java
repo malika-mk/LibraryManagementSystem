@@ -135,19 +135,19 @@ public class LibraryController {
         });
     }
 
-    private void switchToCategoryPage(String category) {
-        try {
-            Stage stage = (Stage) categoryChoiceBox.getScene().getWindow();
-
-            // Загружаем FXML-файл для выбранной категории
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/librarymanagementsystem/view/Fantasy.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 800, 1000);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void switchToCategoryPage(String category) {
+//        try {
+//            Stage stage = (Stage) categoryChoiceBox.getScene().getWindow();
+//
+//            // Загружаем FXML-файл для выбранной категории
+//            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/librarymanagementsystem/view/Fantasy.fxml"));
+//            Scene scene = new Scene(fxmlLoader.load(), 800, 1000);
+//            stage.setScene(scene);
+//            stage.show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @FXML
     void switchToBestseller() throws IOException {
@@ -495,7 +495,47 @@ public class LibraryController {
         bookItem.setStyle("-fx-padding: 10px; -fx-border-color: black; -fx-border-width: 1; -fx-background-color: #F7F5D4;");
 
         return bookItem;
+
     }
+
+    @FXML
+    private void goToHome() {
+        // Убедитесь, что GridPane и Label видны
+        booksGrid.setVisible(true);
+        booksGrid.setManaged(true);
+        popularNowLabel.setVisible(true);
+        popularNowLabel.setManaged(true);
+
+        // Очистите текущие результаты поиска
+        searchResultsBox.getChildren().clear();
+
+        // Проверьте, загружаются ли книги заново (добавьте сюда метод для отображения популярного контента)
+        loadPopularBooks();
+
+        System.out.println("Home button clicked and content set to Popular Now");
+    }
+
+    private void loadPopularBooks() {
+        booksGrid.getChildren().clear(); // Очистить GridPane
+
+        ObservableList<Book> popularBooks = bookDAO.getPopularBooks(); // Получаем популярные книги
+        int column = 0;
+        int row = 0;
+
+        for (Book book : popularBooks) {
+            VBox bookItem = createBookItem(book);
+            booksGrid.add(bookItem, column++, row);
+
+            if (column == 4) { // 4 колонки на строку
+                column = 0;
+                row++;
+            }
+        }
+    }
+
+
+
+
 
 
 

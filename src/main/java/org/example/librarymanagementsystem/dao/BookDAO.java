@@ -121,4 +121,31 @@ public class BookDAO {
 
         return books;
     }
+
+    public ObservableList<Book> getPopularBooks() {
+        ObservableList<Book> books = FXCollections.observableArrayList();
+
+        String query = "SELECT id, name, author, description, image, isbn FROM book ORDER BY id LIMIT 10"; // Здесь можно изменить условие
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String author = resultSet.getString("author");
+                String description = resultSet.getString("description");
+                byte[] imageBytes = resultSet.getBytes("image");
+
+                Image bookImage = (imageBytes != null) ? new Image(new ByteArrayInputStream(imageBytes)) : null;
+
+                books.add(new Book(id, name, author, description, bookImage, resultSet.getString("isbn")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return books;
+    }
 }
