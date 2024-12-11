@@ -1,18 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<!--<?import java.lang.*?>-->
+<!--<?import java.util.*?>-->
+<!--<?import javafx.scene.*?>-->
+<!--<?import javafx.scene.control.*?>-->
+<!--<?import javafx.scene.layout.*?>-->
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.librarymanagementsystem.Controllers.NewBookController"
-            prefHeight="400.0" prefWidth="600.0" >
-    <TextField fx:id="nameField" layoutX="50" layoutY="100" />
-    <TextField fx:id="authorField" layoutX="50" layoutY="150" />
-    <TextField fx:id="imageField" layoutX="50" layoutY="200" />
-    <TextArea fx:id="descriptionField" layoutX="50" layoutY="250" />
+<!--<GridPane alignment="CENTER" hgap="10" vgap="10" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.librarymanagementsystem.Controllers.NewBookController">-->
+<!--    <Label text="Название книги:" GridPane.rowIndex="0" GridPane.columnIndex="0" />-->
+<!--    <TextField fx:id="nameField" GridPane.rowIndex="0" GridPane.columnIndex="1" />-->
 
-</AnchorPane>
+<!--    <Label text="Автор:" GridPane.rowIndex="1" GridPane.columnIndex="0" />-->
+<!--    <TextField fx:id="authorField" GridPane.rowIndex="1" GridPane.columnIndex="1" />-->
+
+<!--    <Label text="Изображение (путь):" GridPane.rowIndex="2" GridPane.columnIndex="0" />-->
+<!--    <HBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="1">-->
+<!--        <TextField fx:id="imageField" HBox.hgrow="ALWAYS" />-->
+<!--        <Button text="Выбрать..." onAction="#selectImage" />-->
+<!--    </HBox>-->
+
+<!--    <Label text="Описание книги:" GridPane.rowIndex="3" GridPane.columnIndex="0" />-->
+<!--    <TextArea fx:id="descriptionField" GridPane.rowIndex="3" GridPane.columnIndex="1" />-->
+
+<!--    <Button text="Добавить" GridPane.rowIndex="4" GridPane.columnIndex="1" onAction="#saveBook" />-->
+<!--</GridPane>-->

@@ -22,7 +22,9 @@ import org.example.librarymanagementsystem.dao.BookDAO;
 import org.example.librarymanagementsystem.dao.DatabaseConnection;
 import org.example.librarymanagementsystem.dao.GetImageFromBooks;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -110,7 +112,7 @@ public class LibraryController {
         // Добавляем обработчик выбора категории
         categoryChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                switchToCategoryPage(newValue);
+                displayBooksByCategory(newValue);
             }
         });
 
@@ -200,38 +202,39 @@ public class LibraryController {
         System.out.println("Выполняется поиск книги с запросом: " + query);
 
         try {
-            // Получаем информацию о книге
             Book result = bookDAO.searchBookByName(query);
 
             if (result != null) {
                 System.out.println("Книга найдена: " + result.getName());
 
-                // Загружаем изображение книги
-                javafx.scene.image.Image bookImage = GetImageFromBooks.getImage(result.getId());
-                result.setImage(bookImage); // Устанавливаем изображение
+                // Получаем изображение из базы
+                Object imageObject = result.getImage();
+                Image bookImage;
+                if (imageObject instanceof byte[]) {
+                    byte[] imageBytes = (byte[]) imageObject;
+                    InputStream inputStream = new ByteArrayInputStream(imageBytes);
+                    bookImage = new Image(inputStream);
+                } else {
+                    bookImage = (Image) imageObject;
+                }
 
-                // Получаем описание книги
-                String description = bookDAO.getBookDescription(result.getId()); // Метод для получения описания
-                result.setDescription(description); // Устанавливаем описание
+                // Устанавливаем изображение
+                result.setImage(bookImage);
 
-                // Скрываем популярное только если нашли результат
+                // Получаем описание
+                String description = bookDAO.getBookDescription(result.getId());
+                result.setDescription(description);
+
+                // Обновляем UI
                 booksGrid.setVisible(false);
                 booksGrid.setManaged(false);
                 popularNowLabel.setVisible(false);
                 popularNowLabel.setManaged(false);
 
-                // Отображаем результаты поиска с изображением и описанием
                 displaySearchResult(result, bookImage);
-
-                // Переход к деталям книги
                 loadBookDetails(result, bookImage, description);
-
             } else {
                 System.out.println("Книга не найдена.");
-                booksGrid.setVisible(true);
-                booksGrid.setManaged(true);
-                popularNowLabel.setVisible(true);
-                popularNowLabel.setManaged(true);
                 displayNoResult();
             }
         } catch (Exception e) {
@@ -308,7 +311,7 @@ public class LibraryController {
 
     // Запрос к базе данных для поиска книги
     public Book searchBookByName(String name) {
-        String query = "SELECT id, name, author, description FROM public.book WHERE name ILIKE ?";
+        String query = "SELECT id, name, author, description, image, isbn FROM public.book WHERE name ILIKE ?";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -320,33 +323,25 @@ public class LibraryController {
                 String bookName = resultSet.getString("name");
                 String author = resultSet.getString("author");
                 String description = resultSet.getString("description");
+                byte[] imageBytes = resultSet.getBytes("image");
+                String isbn = resultSet.getString("isbn");
 
-                // Загружаем изображение
-                javafx.scene.image.Image bookImage = GetImageFromBooks.getImage(id);
-                if (bookImage == null) {
-                    // Если изображение не найдено, используем изображение по умолчанию
-                    bookImage = new javafx.scene.image.Image("/path/to/default/image.png");
+                // Преобразуем байты в объект Image
+                Image bookImage = null;
+                if (imageBytes != null) {
+                    bookImage = new Image(new ByteArrayInputStream(imageBytes));
+                } else {
+                    bookImage = new Image("/path/to/default/image.png");
                 }
 
-                // Возвращаем объект Book с id, name, author, description и image
-                return new Book(id, bookName, author, description, bookImage);
+                // Возвращаем объект Book с использованием конструктора с Image
+                return new Book(id, bookName, author, description, bookImage, isbn);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-
-//    private void displayDefaultContent() {
-//        // Показать GridPane с популярными книгами
-//        booksGrid.setVisible(true);
-//        booksGrid.setManaged(true);
-//
-//        // Скрыть VBox с результатами поиска
-//        searchResultsBox.setVisible(false);
-//        searchResultsBox.setManaged(false);
-//    }
-
     // Метод для отображения результатов поиска
     private void displaySearchResult(Book book) {
         searchResultsBox.getChildren().clear();
@@ -429,6 +424,77 @@ public class LibraryController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void openBookDetailsPage(Book book) {
+        try {
+            // Получаем изображение из объекта Book
+            javafx.scene.image.Image bookImage;
+            if (book.getImage() instanceof javafx.scene.image.Image) {
+                bookImage = (javafx.scene.image.Image) book.getImage();
+            } else {
+                // Устанавливаем изображение по умолчанию, если изображение отсутствует
+                bookImage = new javafx.scene.image.Image("/path/to/default/image.png");
+            }
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanagementsystem/view/BookDetails.fxml"));
+            Parent bookDetailsRoot = loader.load();
+
+            // Получаем контроллер
+            BookDetailsController1 controller = loader.getController();
+
+            // Передаем данные в контроллер
+            controller.setBookDetails(book.getName(), book.getAuthor(), book.getDescription(), bookImage);
+
+            // Создаем окно для отображения
+            Stage stage = new Stage();
+            stage.setTitle("Book Details");
+            stage.setScene(new Scene(bookDetailsRoot));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Ошибка при открытии страницы с деталями книги: " + e.getMessage());
+        }
+    }
+
+    private void displayBooksByCategory(String category) {
+        booksGrid.getChildren().clear(); // Очищаем GridPane перед добавлением новых элементов
+
+        ObservableList<Book> books = bookDAO.getBooksByCategory(category); // Получаем книги по категории
+
+        int column = 0;
+        int row = 0;
+
+        for (Book book : books) {
+            VBox bookItem = createBookItem(book); // Создаем элемент книги
+            booksGrid.add(bookItem, column, row);
+
+            column++;
+            if (column == 4) { // Переход на новую строку после 4 колонок
+                column = 0;
+                row++;
+            }
+        }
+    }
+    private VBox createBookItem(Book book) {
+        ImageView bookImageView = new ImageView();
+        bookImageView.setImage(book.getImage());
+        bookImageView.setFitWidth(100);
+        bookImageView.setFitHeight(150);
+        bookImageView.setPreserveRatio(true);
+
+        Label bookTitleLabel = new Label(book.getName());
+        bookTitleLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        Button viewButton = new Button("View");
+        viewButton.setOnAction(event -> openBookDetailsPage(book));
+
+        VBox bookItem = new VBox(bookImageView, bookTitleLabel, viewButton);
+        bookItem.setSpacing(5);
+        bookItem.setAlignment(Pos.CENTER);
+        bookItem.setStyle("-fx-padding: 10px; -fx-border-color: black; -fx-border-width: 1; -fx-background-color: #F7F5D4;");
+
+        return bookItem;
     }
 
 

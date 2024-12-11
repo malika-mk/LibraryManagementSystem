@@ -2,35 +2,38 @@ package org.example.librarymanagementsystem.Models;
 
 import javafx.scene.image.Image;
 
+import java.io.ByteArrayInputStream;
+
 public class Book {
     private int id;
     private String name;
     private String author;
-    private String description; // Новое поле для описания
-    private Image image;
+    private String description;
+    private byte[] imageBytes; // Бинарные данные изображения
+    private Image image;       // JavaFX Image
+    private String isbn;
 
-    // Конструктор без изображения
-    public Book(int id, String name, String author) {
+    // Конструктор с byte[]
+    public Book(int id, String name, String author, String description, byte[] imageBytes, String isbn) {
         this.id = id;
         this.name = name;
         this.author = author;
+        this.description = description;
+        this.imageBytes = imageBytes;
+        this.isbn = isbn;
+        if (imageBytes != null) {
+            this.image = new Image(new ByteArrayInputStream(imageBytes));
+        }
     }
 
-    // Конструктор с изображением
-    public Book(int id, String name, String author, Image image) {
-        this.id = id;
-        this.name = name;
-        this.author = author;
-        this.image = image;
-    }
-
-    // Конструктор с описанием и изображением
-    public Book(int id, String name, String author, String description, Image image) {
+    // Конструктор с Image
+    public Book(int id, String name, String author, String description, Image image, String isbn) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.description = description;
         this.image = image;
+        this.isbn = isbn;
     }
 
     // Геттеры и сеттеры
@@ -47,11 +50,22 @@ public class Book {
     }
 
     public String getDescription() {
-        return description; // Геттер для описания
+        return description;
     }
 
     public void setDescription(String description) {
-        this.description = description; // Сеттер для описания
+        this.description = description;
+    }
+
+    public byte[] getImageBytes() {
+        return imageBytes;
+    }
+
+    public void setImageBytes(byte[] imageBytes) {
+        this.imageBytes = imageBytes;
+        if (imageBytes != null) {
+            this.image = new Image(new ByteArrayInputStream(imageBytes));
+        }
     }
 
     public Image getImage() {
@@ -60,5 +74,13 @@ public class Book {
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 }
