@@ -162,6 +162,22 @@ public class LibraryController {
     private Button blogbutton;
 
     @FXML
+    private Button Hbutton;
+
+    @FXML
+    void switchToH() throws IOException {
+        Stage stage = (Stage) Hbutton.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/org/example/librarymanagementsystem/view/AdminDashboard.fxml"));
+        try {
+            Scene scene = new Scene(fxmlLoader.load(), 800, 1000);
+            stage.setTitle("Hello!");
+            stage.setScene(scene);
+        } catch (IOException e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    @FXML
     void switchToBlog() throws IOException {
         Stage stage = (Stage) blogbutton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/org/example/librarymanagementsystem/view/blog.fxml"));

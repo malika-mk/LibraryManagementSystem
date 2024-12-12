@@ -12,6 +12,10 @@ public class Book {
     private byte[] imageBytes; // Бинарные данные изображения
     private Image image;       // JavaFX Image
     private String isbn;
+    private int likes; // Количество лайков
+    private double price;
+    private String imagePath;
+    private long totalSales;// Путь к изображению// Цена
 
     // Конструктор с byte[]
     public Book(int id, String name, String author, String description, byte[] imageBytes, String isbn) {
@@ -26,6 +30,35 @@ public class Book {
         }
     }
 
+    public Book(int id, String name, String author, String description, String imagePath, double price, int likes, long totalSales) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.description = description;
+        this.imagePath = imagePath;
+        this.price = price;
+        this.likes = likes;
+        this.totalSales = totalSales;
+    }
+
+    public Book(int id, String name, String author,double price) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.price = price;
+    }
+
+    public Book(int id, String name, String author, String description, String imagePath, String isbn, double price, int likes) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.description = description;
+        this.imagePath = imagePath; // Устанавливаем путь к изображению
+        this.isbn = isbn;
+        this.price = price;
+        this.likes = likes;
+    }
+
     // Конструктор с Image
     public Book(int id, String name, String author, String description, Image image, String isbn) {
         this.id = id;
@@ -37,6 +70,39 @@ public class Book {
     }
 
     // Геттеры и сеттеры
+
+    public long getTotalSales() {
+        return totalSales;
+    }
+
+    public void setTotalSales(long totalSales) {
+        this.totalSales = totalSales;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     public int getId() {
         return id;
     }

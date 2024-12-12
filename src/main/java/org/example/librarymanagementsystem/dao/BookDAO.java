@@ -162,4 +162,60 @@ public class BookDAO {
 
         return books;
     }
+
+    public void addLikeToBook(int bookId) {
+        String query = "UPDATE book SET likes = likes + 1 WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, bookId);
+            statement.executeUpdate();
+            System.out.println("Лайк успешно добавлен.");
+        } catch (SQLException e) {
+            System.err.println("Ошибка при добавлении лайка: " + e.getMessage());
+        }
+    }
+
+    public void addSaleToBook(int bookId) {
+        String query = "UPDATE book SET sales = sales + 1 WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, bookId);
+            statement.executeUpdate();
+            System.out.println("Продажа успешно добавлена.");
+        } catch (SQLException e) {
+            System.err.println("Ошибка при добавлении продажи: " + e.getMessage());
+        }
+    }
+
+    public Book getMostLikedBook() {
+        String query = """
+        SELECT id, name, author, description, imagepath, isbn, price, likes
+        FROM book
+        ORDER BY likes DESC
+        LIMIT 1
+    """;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return new Book(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("author"),
+                        resultSet.getString("description"),
+                        resultSet.getString("imagepath"),
+                        resultSet.getString("isbn"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("likes")
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("Ошибка при получении популярной книги: " + e.getMessage());
+        }
+        return null;
+    }
 }

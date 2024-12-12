@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.example.librarymanagementsystem.Models.Book;
+import org.example.librarymanagementsystem.dao.BookDAO;
 
 public class BookDetailsController1 {
 
@@ -36,6 +38,25 @@ public class BookDetailsController1 {
             bookImageView.setImage(bookImage);
         } else {
             bookImageView.setImage(new Image("/src/main/java/org/example/resources/images/_.jpeg"));
+        }
+    }
+
+    private BookDAO bookDAO = new BookDAO();
+    private Book currentBook;
+
+    @FXML
+    private void onLikeButtonClick() {
+        if (currentBook != null) {
+            bookDAO.addLikeToBook(currentBook.getId());
+            System.out.println("Лайк добавлен для книги: " + currentBook.getName());
+        }
+    }
+
+    @FXML
+    private void onSellButtonClick() {
+        if (currentBook != null) {
+            bookDAO.addSaleToBook(currentBook.getId());
+            System.out.println("Продажа добавлена для книги: " + currentBook.getName());
         }
     }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanagementsystem.Controllers.AdminController">
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Панель Администратора" />
+
+    <HBox alignment="CENTER" spacing="20">
+        <Button onAction="#onShowPopularBook" text="Популярная книга за месяц" />
+        <Button onAction="#onShowMostSoldBook" text="Самая продаваемая книга" />
+        <Button onAction="#onShowMostExpensiveBook" text="Самая дорогая книга" />
+    </HBox>
+
+    <TableView fx:id="statisticsTable" style="-fx-pref-height: 300px; -fx-pref-width: 600px;">
+        <columns>
+            <TableColumn fx:id="nameColumn" text="Название книги" />
+            <TableColumn fx:id="authorColumn" text="Автор" />
+            <TableColumn fx:id="valueColumn" text="Продажи/Цена" />
+            <TableColumn fx:id="priceColumn" text="Цена" />
+        </columns>
+    </TableView>
+
+    <Button fx:id="HomeButton" onAction="#switchToHome" text="Назад" />
+</VBox>

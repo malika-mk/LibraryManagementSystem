@@ -52,10 +52,10 @@
             <ChoiceBox fx:id="categoryChoiceBox" layoutX="429.0" layoutY="160.0" prefHeight="26.0" prefWidth="98.0" style="-fx-background-color: transparent;">
                <items>
                   <FXCollections fx:factory="observableArrayList">
-<!--                     <String fx:value="Romance novel" />-->
-<!--                     <String fx:value="Fantasy" />-->
-<!--                     <String fx:value="Horror" />-->
-<!--                     <String fx:value="Fantasy" />-->
+                     <!--                     <String fx:value="Romance novel" />-->
+                     <!--                     <String fx:value="Fantasy" />-->
+                     <!--                     <String fx:value="Horror" />-->
+                     <!--                     <String fx:value="Fantasy" />-->
                   </FXCollections>
                </items>
             </ChoiceBox>
@@ -313,6 +313,7 @@
                   </VBox>
                </children>
             </GridPane>
+            <Button fx:id="Hbutton" layoutX="698.0" layoutY="62.0" minWidth="38.0" mnemonicParsing="false" onAction="#switchToH" prefHeight="31.0" prefWidth="38.0" text="H" />
          </children>
       </AnchorPane>
    </content>
