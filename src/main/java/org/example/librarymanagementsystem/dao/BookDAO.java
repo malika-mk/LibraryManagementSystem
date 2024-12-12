@@ -90,11 +90,11 @@ public class BookDAO {
     public ObservableList<Book> getBooksByCategory(String category) {
         ObservableList<Book> books = FXCollections.observableArrayList();
 
-        String query = "SELECT b.id, b.name, b.author, b.description, b.image, b.isbn " +
+        String query = "SELECT b.id, b.name, b.author, b.description, b.image, b.imagepath, b.isbn " +
                 "FROM public.book b " +
                 "JOIN public.book_category bc ON b.id = bc.book_id " +
                 "JOIN public.category c ON bc.category_id = c.id " +
-                "WHERE c.name = ?";
+                "WHERE c.categoryname = ?";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -107,10 +107,24 @@ public class BookDAO {
                 String author = resultSet.getString("author");
                 String description = resultSet.getString("description");
                 byte[] imageBytes = resultSet.getBytes("image");
+                String imagePath = resultSet.getString("imagepath");
+                String isbn = resultSet.getString("isbn");
 
-                Image bookImage = (imageBytes != null) ? new Image(new ByteArrayInputStream(imageBytes)) : null;
+                // Создаем объект Image
+                Image bookImage = null;
+                if (imageBytes != null) {
+                    // Если данные изображения сохранены в бинарном формате
+                    bookImage = new Image(new ByteArrayInputStream(imageBytes));
+                } else if (imagePath != null && !imagePath.isEmpty()) {
+                    // Если указан путь к изображению
+                    try {
+                        bookImage = new Image("file:" + imagePath);
+                    } catch (Exception e) {
+                        System.err.println("Ошибка загрузки изображения по пути: " + imagePath);
+                    }
+                }
 
-                books.add(new Book(id, name, author, description, bookImage, resultSet.getString("isbn")));
+                books.add(new Book(id, name, author, description, bookImage, isbn));
             }
 
             System.out.println("Книги, найденные для категории " + category + ": " + books.size());
