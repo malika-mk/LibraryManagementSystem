@@ -218,4 +218,28 @@ public class BookDAO {
         }
         return null;
     }
+
+    public void updateLikes(int bookId, int newLikes) {
+        String query = "UPDATE public.book SET likes = ? WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, newLikes);
+            statement.setInt(2, bookId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateSales(int bookId, int newSales) {
+        String query = "UPDATE public.book SET sales = ? WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, newSales);
+            statement.setInt(2, bookId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

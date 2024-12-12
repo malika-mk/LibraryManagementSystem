@@ -13,7 +13,9 @@
    <ImageView fx:id="bookImageView" fitHeight="188.0" fitWidth="140.0" layoutX="68.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true" />
 
     <HBox alignment="CENTER" layoutX="68.0" layoutY="253.0" spacing="20">
-        <Button onAction="#onLikeButtonClick" text="❤️ " />
-        <Button onAction="#onSellButtonClick" text="Sell" />
+        <Button fx:id="likeButton" onAction="#onLikeButtonClick" text="❤️ " />
+        <Label fx:id="likesLabel" text="Likes: 0" textFill="WHITE" />
+        <Button fx:id="sellButton" onAction="#onSellButtonClick" text="Sell" />
+        <Label fx:id="salesLabel" text="Sales: 0" textFill="WHITE" />
     </HBox>
 </AnchorPane>

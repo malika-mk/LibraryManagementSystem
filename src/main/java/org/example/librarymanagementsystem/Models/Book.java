@@ -16,6 +16,18 @@ public class Book {
     private double price;
     private String imagePath;
     private long totalSales;// Путь к изображению// Цена
+    private int sales;
+
+    // Добавьте конструктор
+    public Book(int id, String name, String author, String description, Image image, int likes, int sales) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.description = description;
+        this.image = image;
+        this.likes = likes;
+        this.sales = sales;
+    }
 
     // Конструктор с byte[]
     public Book(int id, String name, String author, String description, byte[] imageBytes, String isbn) {
@@ -70,6 +82,14 @@ public class Book {
     }
 
     // Геттеры и сеттеры
+
+    public int getSales() {
+        return sales;
+    }
+
+    public void setSales(int sales) {
+        this.sales = sales;
+    }
 
     public long getTotalSales() {
         return totalSales;

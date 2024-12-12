@@ -102,6 +102,7 @@ public class LibraryController {
     @FXML
     public void initialize() {
         categoryChoiceBox.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
+        loadPopularBooks();
 
         // Добавляем категории
         categoryChoiceBox.getItems().addAll("Romance novel", "Fantasy", "Adventure fiction", "Horror");
@@ -259,27 +260,30 @@ public class LibraryController {
         }
     }
 
-    private void loadBookDetails(Book book, javafx.scene.image.Image bookImage, String description) {
+    private void loadBookDetails(Book book, Image bookImage, String description) {
         try {
-            // Загружаем файл FXML для окна BookDetails
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetails.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanagementsystem/view/BookDetails.fxml"));
             Parent bookDetailsRoot = loader.load();
 
             // Получаем доступ к контроллеру
             BookDetailsController1 bookDetailsController = loader.getController();
 
-            // Устанавливаем данные в контроллер
-            bookDetailsController.setBookDetails(book.getName(), book.getAuthor(), description, bookImage);
+            // Передаем данные в контроллер
+            bookDetailsController.setBookDetails(
+                    book.getName(),
+                    book.getAuthor(),
+                    description,
+                    bookImage
+            );
 
-            // Показать окно с деталями книги (возможно, открыть новое окно или переключить в сцену)
+            // Создаем новое окно для отображения деталей книги
             Stage stage = new Stage();
             stage.setTitle("Book Details");
             stage.setScene(new Scene(bookDetailsRoot));
             stage.show();
-
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Ошибка при загрузке страницы с деталями книги.");
+            System.out.println("Ошибка при загрузке страницы с деталями книги: " + e.getMessage());
         }
     }
 
@@ -402,7 +406,12 @@ public class LibraryController {
             BookDetailsController1 controller = loader.getController();
 
             // Передаем данные в контроллер
-            controller.setBookDetails(book.getName(), book.getAuthor(), book.getDescription(), bookImage);
+            controller.setBookDetails(
+                    book.getName(),
+                    book.getAuthor(),
+                    book.getDescription(),
+                    bookImage
+            );
 
             // Создаем окно для отображения
             Stage stage = new Stage();
@@ -457,7 +466,9 @@ public class LibraryController {
             Parent bookDetailsRoot = loader.load();
 
             // Получаем контроллер
+
             BookDetailsController1 controller = loader.getController();
+            controller.setBook(book); // Устанавливаем книгу
 
             // Передаем данные в контроллер
             controller.setBookDetails(book.getName(), book.getAuthor(), book.getDescription(), bookImage);
@@ -532,9 +543,9 @@ public class LibraryController {
     }
 
     private void loadPopularBooks() {
-        booksGrid.getChildren().clear(); // Очистить GridPane
+        booksGrid.getChildren().clear();
+        ObservableList<Book> popularBooks = bookDAO.getPopularBooks();
 
-        ObservableList<Book> popularBooks = bookDAO.getPopularBooks(); // Получаем популярные книги
         int column = 0;
         int row = 0;
 
@@ -542,14 +553,41 @@ public class LibraryController {
             VBox bookItem = createBookItem(book);
             booksGrid.add(bookItem, column++, row);
 
-            if (column == 4) { // 4 колонки на строку
+            if (column == 4) {
                 column = 0;
                 row++;
             }
         }
     }
 
+    public ObservableList<Book> getPopularBooks() {
+        String query = "SELECT * FROM public.book ORDER BY likes DESC LIMIT 10";
+        ObservableList<Book> popularBooks = FXCollections.observableArrayList();
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
 
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String author = resultSet.getString("author");
+                String description = resultSet.getString("description");
+                int likes = resultSet.getInt("likes");
+                int sales = resultSet.getInt("sales");
+                byte[] imageBytes = resultSet.getBytes("image");
+
+                Image image = null;
+                if (imageBytes != null) {
+                    image = new Image(new ByteArrayInputStream(imageBytes));
+                }
+
+                popularBooks.add(new Book(id, name, author, description, image, likes, sales));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return popularBooks;
+    }
 
 
 
