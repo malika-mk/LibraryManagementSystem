@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="2456.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanagementsystem.Controllers.LibraryController">
+<ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="2456.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanagementsystem.Controllers.LibraryController">
    <content>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="2500.0" prefWidth="800.0" style="-fx-background-color: #5F4C4B;">
          <children>
@@ -52,10 +52,6 @@
             <ChoiceBox fx:id="categoryChoiceBox" layoutX="429.0" layoutY="160.0" prefHeight="26.0" prefWidth="98.0" style="-fx-background-color: transparent;">
                <items>
                   <FXCollections fx:factory="observableArrayList">
-                     <!--                     <String fx:value="Romance novel" />-->
-                     <!--                     <String fx:value="Fantasy" />-->
-                     <!--                     <String fx:value="Horror" />-->
-                     <!--                     <String fx:value="Fantasy" />-->
                   </FXCollections>
                </items>
             </ChoiceBox>

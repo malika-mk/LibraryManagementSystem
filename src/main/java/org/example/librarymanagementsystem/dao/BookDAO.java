@@ -64,6 +64,34 @@ public class BookDAO {
         return null;
     }
 
+    public Book getBookById(int bookId) {
+        String query = "SELECT id, name, author, description, image, isbn, likes, sales FROM public.book WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, bookId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String author = resultSet.getString("author");
+                String description = resultSet.getString("description");
+                byte[] imageBytes = resultSet.getBytes("image");
+                String isbn = resultSet.getString("isbn");
+                int likes = resultSet.getInt("likes");
+                int sales = resultSet.getInt("sales");
+
+                Image bookImage = (imageBytes != null) ? new Image(new ByteArrayInputStream(imageBytes)) : null;
+
+                return new Book(id, name, author, description, bookImage, isbn, likes, sales);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     // Метод для добавления книги в базу данных
     public void addBook(Book book) {
         String query = "INSERT INTO book (name, author, description, image) VALUES (?, ?, ?, ?)";
@@ -85,6 +113,39 @@ public class BookDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addLike(int bookId) {
+        String query = "INSERT INTO likes (book_id) VALUES (?)";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, bookId);
+            statement.executeUpdate();
+
+            // Обновляем счетчик лайков в таблице `book`
+            String updateQuery = "UPDATE book SET likes = likes + 1 WHERE id = ?";
+            try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+                updateStatement.setInt(1, bookId);
+                updateStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getLikes(int bookId) {
+        String query = "SELECT COUNT(*) AS like_count FROM likes WHERE book_id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, bookId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("like_count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public ObservableList<Book> getBooksByCategory(String category) {
@@ -189,36 +250,6 @@ public class BookDAO {
         }
     }
 
-    public Book getMostLikedBook() {
-        String query = """
-        SELECT id, name, author, description, imagepath, isbn, price, likes
-        FROM book
-        ORDER BY likes DESC
-        LIMIT 1
-    """;
-
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return new Book(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("author"),
-                        resultSet.getString("description"),
-                        resultSet.getString("imagepath"),
-                        resultSet.getString("isbn"),
-                        resultSet.getDouble("price"),
-                        resultSet.getInt("likes")
-                );
-            }
-        } catch (SQLException e) {
-            System.err.println("Ошибка при получении популярной книги: " + e.getMessage());
-        }
-        return null;
-    }
-
     public void updateLikes(int bookId, int newLikes) {
         String query = "UPDATE public.book SET likes = ? WHERE id = ?";
         try (Connection connection = DatabaseConnection.getConnection();
@@ -238,6 +269,61 @@ public class BookDAO {
             statement.setInt(1, newSales);
             statement.setInt(2, bookId);
             statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getLikesForBook(int bookId) {
+        String query = "SELECT likes FROM book WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, bookId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("likes");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getSalesForBook(int bookId) {
+        String query = "SELECT sales FROM public.book WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, bookId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("sales");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0; // Возвращаем 0, если ничего не найдено или произошла ошибка
+    }
+
+    public void updateBookLikes(int bookId, int likes) {
+        String query = "UPDATE book SET likes = ? WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, likes);
+            statement.setInt(2, bookId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateBookSales(int bookId, int sales) {
+        String query = "UPDATE book SET sales = ? WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, sales);
+            statement.setInt(2, bookId);
+            statement.executeUpdate();
+            System.out.println("Продажи успешно обновлены для книги ID: " + bookId);
         } catch (SQLException e) {
             e.printStackTrace();
         }

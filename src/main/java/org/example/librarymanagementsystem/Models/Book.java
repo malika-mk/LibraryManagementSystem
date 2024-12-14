@@ -17,6 +17,8 @@ public class Book {
     private String imagePath;
     private long totalSales;// Путь к изображению// Цена
     private int sales;
+    private String value;
+
 
     // Добавьте конструктор
     public Book(int id, String name, String author, String description, Image image, int likes, int sales) {
@@ -60,6 +62,29 @@ public class Book {
         this.price = price;
     }
 
+    public Book(int id, String name, String author, String description, Image image, String isbn, double price, int sales) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.description = description;
+        this.image = image;
+        this.isbn = isbn;
+        this.price = price;
+        this.sales = sales;
+    }
+
+    public Book(int id, String name, String author, String description, String imagePath, String isbn, double price, int likes, String category) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.description = description;
+        this.imagePath = imagePath; // Используем imagePath
+        this.isbn = isbn;
+        this.price = price;
+        this.likes = likes;
+        this.category = category;  // Инициализируем категорию
+    }
+
     public Book(int id, String name, String author, String description, String imagePath, String isbn, double price, int likes) {
         this.id = id;
         this.name = name;
@@ -69,6 +94,17 @@ public class Book {
         this.isbn = isbn;
         this.price = price;
         this.likes = likes;
+    }
+
+    public Book(int id, String name, String author, String description, Image image, String isbn, int likes, int sales) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.description = description;
+        this.image = image;
+        this.isbn = isbn;
+        this.likes = likes;
+        this.sales = sales;
     }
 
     // Конструктор с Image
@@ -82,6 +118,25 @@ public class Book {
     }
 
     // Геттеры и сеттеры
+
+    private String category; // Для категории
+
+    // Конструктор, геттеры и сеттеры для category
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 
     public int getSales() {
         return sales;

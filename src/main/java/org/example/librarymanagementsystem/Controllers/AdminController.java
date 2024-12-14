@@ -5,9 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.example.librarymanagementsystem.HelloApplication;
@@ -28,16 +26,21 @@ public class AdminController {
     private TableColumn<Book, String> valueColumn;
     @FXML
     private TableColumn<Book, Double> priceColumn;
+    @FXML
+    private ChoiceBox<String> categoryChoiceBox;
 
     private final SalesDAO salesDAO = new SalesDAO();
 
     @FXML
+    private TableColumn<Book, String> categoryColumn; // Add this to your controller
+
+    @FXML
     public void initialize() {
-        // Настройка колонок таблицы
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category")); // Add this line to bind the category
     }
 
     @FXML
@@ -58,9 +61,9 @@ public class AdminController {
 
     @FXML
     private void onShowPopularBook() {
-        Book popularBook = salesDAO.getMostPopularBookLastMonth();
-        if (popularBook != null) {
-            ObservableList<Book> books = FXCollections.observableArrayList(popularBook);
+        Book mostLikedBook = salesDAO.getMostLikedBook();
+        if (mostLikedBook != null) {
+            ObservableList<Book> books = FXCollections.observableArrayList(mostLikedBook);
             statisticsTable.setItems(books);
         } else {
             System.out.println("Нет данных о популярной книге.");
@@ -86,6 +89,59 @@ public class AdminController {
             statisticsTable.setItems(books);
         } else {
             System.out.println("Нет данных о дорогих книгах.");
+        }
+    }
+
+    @FXML
+    private void onShowCheapestBook() {
+        Book cheapestBook = salesDAO.getCheapestBook();
+        if (cheapestBook != null) {
+            ObservableList<Book> books = FXCollections.observableArrayList(cheapestBook);
+            statisticsTable.setItems(books);
+        } else {
+            System.out.println("Нет данных о самой дешевой книге.");
+        }
+    }
+
+    @FXML
+    private void onShowMostPopularCategory() {
+        String mostPopularCategory = salesDAO.getMostPopularCategory();
+        if (mostPopularCategory != null) {
+            // Получаем книги для самой популярной категории
+            ObservableList<Book> booksInCategory = salesDAO.getBooksByCategory(mostPopularCategory);
+
+            // Заполняем таблицу
+            for (Book book : booksInCategory) {
+                book.setCategory(mostPopularCategory); // Устанавливаем категорию для каждой книги
+            }
+
+            statisticsTable.setItems(booksInCategory); // Отображаем книги в таблице
+            System.out.println("Самая популярная категория: " + mostPopularCategory);
+        } else {
+            System.out.println("Нет данных о категориях.");
+        }
+    }
+
+    @FXML
+    private void onShowLeastPopularCategory() {
+        // Get the least popular category from the database
+        String leastPopularCategory = salesDAO.getLeastPopularCategory();
+
+        if (leastPopularCategory != null) {
+            // Get books in the least popular category
+            ObservableList<Book> booksInCategory = salesDAO.getBooksByCategory(leastPopularCategory);
+
+            // Set category for each book in the list
+            for (Book book : booksInCategory) {
+                book.setCategory(leastPopularCategory); // Ensure category is set
+            }
+
+            // Set the items for the statistics table
+            statisticsTable.setItems(booksInCategory);
+
+            System.out.println("Самая непопулярная категория: " + leastPopularCategory);
+        } else {
+            System.out.println("Нет данных о категориях.");
         }
     }
 }

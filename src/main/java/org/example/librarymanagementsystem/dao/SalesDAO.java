@@ -1,5 +1,8 @@
 package org.example.librarymanagementsystem.dao;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import org.example.librarymanagementsystem.Models.Book;
 
 import java.sql.Connection;
@@ -23,14 +26,146 @@ public class SalesDAO {
             e.printStackTrace();
         }
     }
-    public Book getMostPopularBookLastMonth() {
+    public Book getMostLikedBook() {
         String query = """
-        SELECT b.id, b.name, b.author, b.description, b.imagepath, b.isbn, SUM(s.quantity) AS total_sales
-        FROM book b
-        JOIN sales s ON b.id = s.book_id
-        WHERE s.sale_date >= NOW() - INTERVAL '1 month'
-        GROUP BY b.id
-        ORDER BY total_sales DESC
+    SELECT b.id, b.name, b.author, b.description, b.imagepath, b.isbn, b.price, b.likes, c.categoryname
+    FROM book b
+    JOIN book_category bc ON b.id = bc.book_id
+    JOIN category c ON bc.category_id = c.id
+    ORDER BY b.likes DESC
+    LIMIT 1
+    """;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return new Book(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("author"),
+                        resultSet.getString("description"),
+                        resultSet.getString("imagepath"),
+                        resultSet.getString("isbn"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("likes"),
+                        resultSet.getString("categoryname")  // Добавляем категорию
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("Ошибка при получении популярной книги: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public Book getMostSoldBook() {
+        String query = """
+    SELECT b.id, b.name, b.author, b.description, b.imagepath, b.isbn, b.price, b.sales, c.categoryname
+    FROM book b
+    JOIN book_category bc ON b.id = bc.book_id
+    JOIN category c ON bc.category_id = c.id
+    ORDER BY b.sales DESC
+    LIMIT 1
+    """;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return new Book(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("author"),
+                        resultSet.getString("description"),
+                        resultSet.getString("imagepath"),
+                        resultSet.getString("isbn"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("sales"),
+                        resultSet.getString("categoryname") // Передаем категорию книги
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Book getMostExpensiveBook() {
+        String query = """
+    SELECT b.id, b.name, b.author, b.description, b.imagepath, b.isbn, b.price, b.likes, c.categoryname
+    FROM book b
+    JOIN book_category bc ON b.id = bc.book_id
+    JOIN category c ON bc.category_id = c.id
+    ORDER BY b.price DESC
+    LIMIT 1
+    """;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return new Book(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("author"),
+                        resultSet.getString("description"),
+                        resultSet.getString("imagepath"),
+                        resultSet.getString("isbn"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("likes"),
+                        resultSet.getString("categoryname")
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("Ошибка при получении самой дорогой книги: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public Book getCheapestBook() {
+        String query = """
+    SELECT b.id, b.name, b.author, b.description, b.imagepath, b.isbn, b.price, b.sales, c.categoryname
+    FROM book b
+    JOIN book_category bc ON b.id = bc.book_id
+    JOIN category c ON bc.category_id = c.id
+    ORDER BY b.price ASC
+    LIMIT 1
+    """;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return new Book(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("author"),
+                        resultSet.getString("description"),
+                        resultSet.getString("imagepath"),
+                        resultSet.getString("isbn"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("sales"),
+                        resultSet.getString("categoryname") // Передаем категорию книги
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getMostPopularCategory() {
+        String query = """
+        SELECT c.categoryname, COUNT(b.id) AS book_count
+        FROM category c
+        JOIN book_category bc ON c.id = bc.category_id
+        JOIN book b ON bc.book_id = b.id
+        GROUP BY c.categoryname
+        ORDER BY book_count DESC
         LIMIT 1
     """;
 
@@ -39,16 +174,7 @@ public class SalesDAO {
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return new Book(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("author"),
-                        resultSet.getString("description"),
-                        resultSet.getString("imagepath"),
-                        resultSet.getDouble("price"),
-                        resultSet.getInt("likes"),
-                        resultSet.getLong("total_sales")
-                );
+                return resultSet.getString("categoryname");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,14 +182,55 @@ public class SalesDAO {
         return null;
     }
 
-    public Book getMostSoldBook() {
+    public ObservableList<Book> getBooksByCategory(String category) {
+        ObservableList<Book> books = FXCollections.observableArrayList();
         String query = """
-        SELECT b.id, b.name, b.author, b.description, b.imagepath, b.price, SUM(s.quantity) AS total_sales
+        SELECT b.id, b.name, b.author, b.description, b.image, b.isbn, b.price, b.sales
         FROM book b
-        JOIN sales s ON b.id = s.book_id
-        GROUP BY b.id
-        ORDER BY total_sales DESC
-        LIMIT 1;
+        JOIN book_category bc ON b.id = bc.book_id
+        JOIN category c ON bc.category_id = c.id
+        WHERE c.categoryname = ?
+    """;
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, category);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String author = resultSet.getString("author");
+                String description = resultSet.getString("description");
+                double price = resultSet.getDouble("price");
+                int sales = resultSet.getInt("sales");
+                String isbn = resultSet.getString("isbn");
+
+                // Проверка на изображение
+                Image bookImage = null;
+                String imagePath = resultSet.getString("image"); // Строка с путем к изображению
+                if (imagePath != null && !imagePath.isEmpty()) {
+                    bookImage = new Image("file:" + imagePath); // Загрузка изображения по пути
+                }
+
+                // Создание книги и добавление в список
+                books.add(new Book(id, name, author, description, bookImage, isbn, price, sales));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return books;
+    }
+
+    public String getLeastPopularCategory() {
+        String query = """
+    SELECT c.categoryname, COUNT(b.id) AS book_count
+    FROM category c
+    JOIN book_category bc ON c.id = bc.category_id
+    JOIN book b ON bc.book_id = b.id
+    GROUP BY c.categoryname
+    ORDER BY book_count ASC
+    LIMIT 1
     """;
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -71,48 +238,10 @@ public class SalesDAO {
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return new Book(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("author"),
-                        resultSet.getString("description"),
-                        resultSet.getString("imagepath"),
-                        resultSet.getDouble("price"),
-                        resultSet.getInt("likes"),
-                        resultSet.getLong("total_sales")
-                );
+                return resultSet.getString("categoryname");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Ошибка при получении самой продаваемой книги: " + e.getMessage());
-        }
-        return null;
-    }
-
-    public Book getMostExpensiveBook() {
-        String query = """
-            SELECT b.id, b.name, b.author, b.price
-            FROM book b
-            ORDER BY b.price DESC
-            LIMIT 1
-            """;
-
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                return new Book(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("author"),
-                        resultSet.getDouble("price")
-                );
-            }
-        } catch (SQLException e) {
-            System.err.println("Ошибка при получении самой дорогой книги: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Ошибка при получении самой непопулярной категории: " + e.getMessage());
         }
         return null;
     }

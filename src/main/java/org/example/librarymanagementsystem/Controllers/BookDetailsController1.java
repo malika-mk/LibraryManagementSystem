@@ -34,8 +34,9 @@ public class BookDetailsController1 {
     @FXML
     private Label salesLabel;
 
-    private Book book;
+    private Book currentBook;
 
+    private Book book; // Добавляем поле для хранения текущей книги
 
     private int likes = 0; // Лайки текущей книги
     private int sales = 0; // Продажи текущей книги
@@ -44,14 +45,12 @@ public class BookDetailsController1 {
         likeButton.setOnAction(event -> {
             likes++;
             updateLikesLabel();
-            // Здесь обновляем данные книги в базе данных
             updateBookLikesInDatabase();
         });
 
         sellButton.setOnAction(event -> {
             sales++;
             updateSalesLabel();
-            // Здесь обновляем данные книги в базе данных
             updateBookSalesInDatabase();
         });
     }
@@ -65,58 +64,67 @@ public class BookDetailsController1 {
     }
 
     private void updateBookLikesInDatabase() {
-        // Логика обновления лайков в базе данных
         BookDAO bookDAO = new BookDAO();
-        bookDAO.updateLikes(book.getId(), likes); // Метод для обновления в DAO
+        bookDAO.updateLikes(book.getId(), likes);
     }
 
     private void updateBookSalesInDatabase() {
-        // Логика обновления продаж в базе данных
         BookDAO bookDAO = new BookDAO();
-        bookDAO.updateSales(book.getId(), sales); // Метод для обновления в DAO
-    }
-
-    /**
-     * Метод для установки данных книги в интерфейс.
-     *
-     * @param title       Название книги
-     * @param author      Автор книги
-     * @param description Описание книги
-     * @param bookImage   Изображение книги
-     */
-    public void setBookDetails(String name, String author, String description, Image bookImage) {
-        titleLabel.setText(name);
-        authorLabel.setText(author);
-        descriptionLabel.setText(description);
-
-        if (bookImage != null) {
-            bookImageView.setImage(bookImage);
-        } else {
-            // Замените на изображение по умолчанию
-            bookImageView.setImage(new Image("/path/to/default/image.png"));
-        }
+        bookDAO.updateSales(book.getId(), sales);
     }
 
     public void setBook(Book book) {
-        this.book = book;
+        this.book = book; // Сохраняем объект книги для дальнейшего использования
     }
 
-    private BookDAO bookDAO = new BookDAO();
-    private Book currentBook;
+    public void setBookDetails(String name, String author, String description, Image bookImage, Book book) {
+        if (book == null) {
+            System.err.println("Ошибка: передан null вместо объекта Book.");
+            return;
+        }
+
+        this.currentBook = book; // сохраняем объект для дальнейшего использования
+        titleLabel.setText(name);
+        authorLabel.setText(author);
+        descriptionLabel.setText(description);
+        bookImageView.setImage(bookImage);
+
+        // Подгружаем данные из базы
+        BookDAO bookDAO = new BookDAO();
+        int likes = bookDAO.getLikesForBook(book.getId());
+        int sales = bookDAO.getSalesForBook(book.getId());
+
+        // Устанавливаем лайки и продажи
+        likesLabel.setText("Likes: " + likes);
+        salesLabel.setText("Sales: " + sales);
+
+        // Обновляем текущий объект книги
+        currentBook.setLikes(likes);
+        currentBook.setSales(sales);
+    }
 
     @FXML
     private void onLikeButtonClick() {
-        if (currentBook != null) {
-            bookDAO.addLikeToBook(currentBook.getId());
-            System.out.println("Лайк добавлен для книги: " + currentBook.getName());
+        if (book != null) {
+            book.setLikes(book.getLikes() + 1); // Увеличиваем лайки в объекте
+            likesLabel.setText("Likes: " + book.getLikes()); // Обновляем UI
+
+            // Обновляем данные в базе данных
+            BookDAO bookDAO = new BookDAO();
+            bookDAO.updateLikes(book.getId(), book.getLikes());
         }
     }
 
     @FXML
     private void onSellButtonClick() {
-        if (currentBook != null) {
-            bookDAO.addSaleToBook(currentBook.getId());
-            System.out.println("Продажа добавлена для книги: " + currentBook.getName());
+        if (book != null) {
+            book.setSales(book.getSales() + 1); // Увеличиваем продажи в объекте
+            salesLabel.setText("Sales: " + book.getSales()); // Обновляем UI
+
+            // Обновляем данные в базе данных
+            BookDAO bookDAO = new BookDAO();
+            bookDAO.updateSales(book.getId(), book.getSales());
         }
     }
+
 }

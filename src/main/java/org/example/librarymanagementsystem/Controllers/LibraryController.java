@@ -53,6 +53,9 @@ public class LibraryController {
 
     @FXML
     private TextField searchField;
+ // или VBox, если это VBox
+    @FXML
+    private ScrollPane scrollPane; // если это ScrollPane, в котором находится booksGrid
 
     @FXML
     private VBox contentBox; // Контейнер для отображения результатов
@@ -101,10 +104,16 @@ public class LibraryController {
 
     @FXML
     public void initialize() {
+        // Устанавливаем стиль для categoryChoiceBox
         categoryChoiceBox.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
+
+        // Настройка минимальной и максимальной ширины для categoryChoiceBox
+        categoryChoiceBox.setMinWidth(150);  // Минимальная ширина
+        categoryChoiceBox.setMaxWidth(Double.MAX_VALUE);  // Максимальная ширина (растягивается на доступную ширину)
+
         loadPopularBooks();
 
-        // Добавляем категории
+        // Добавляем категории в ChoiceBox
         categoryChoiceBox.getItems().addAll("Romance novel", "Fantasy", "Adventure fiction", "Horror");
 
         // Устанавливаем начальное значение
@@ -123,7 +132,7 @@ public class LibraryController {
             onSearch();
         });
 
-        // Слушатель изменений текста (только для валидации или дополнительных действий)
+        // Слушатель изменений текста в поле поиска
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.isEmpty()) {
                 // Если поле поиска пустое, показываем секцию "Popular Now"
@@ -134,6 +143,9 @@ public class LibraryController {
                 popularNowLabel.setVisible(true);
             }
         });
+
+        // Привязываем ширину элемента (например, GridPane или VBox)
+        booksGrid.prefWidthProperty().bind(scrollPane.widthProperty()); // Привязка ширины для адаптации к размеру окна
     }
 
 //    private void switchToCategoryPage(String category) {
@@ -273,7 +285,8 @@ public class LibraryController {
                     book.getName(),
                     book.getAuthor(),
                     description,
-                    bookImage
+                    bookImage,
+                    book
             );
 
             // Создаем новое окно для отображения деталей книги
@@ -410,7 +423,8 @@ public class LibraryController {
                     book.getName(),
                     book.getAuthor(),
                     book.getDescription(),
-                    bookImage
+                    bookImage,
+                    book
             );
 
             // Создаем окно для отображения
@@ -471,7 +485,7 @@ public class LibraryController {
             controller.setBook(book); // Устанавливаем книгу
 
             // Передаем данные в контроллер
-            controller.setBookDetails(book.getName(), book.getAuthor(), book.getDescription(), bookImage);
+            controller.setBookDetails(book.getName(), book.getAuthor(), book.getDescription(), book.getImage(), book);
 
             // Создаем окно для отображения
             Stage stage = new Stage();
