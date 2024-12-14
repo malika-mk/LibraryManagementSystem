@@ -12,7 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.example.librarymanagementsystem.dao.BookDAO;
 import org.example.librarymanagementsystem.Models.Book;
-import org.example.librarymanagementsystem.dao.CategoryDAO; // DAO для получения категорий
+import org.example.librarymanagementsystem.dao.CategoryDAO;
 
 import java.io.File;
 import java.util.HashMap;
@@ -27,7 +27,7 @@ public class NewBookController {
     @FXML
     private TextField descriptionField;
     @FXML
-    private ComboBox<String> categoryComboBox; // Замена TextField на ComboBox
+    private ComboBox<String> categoryComboBox;
     @FXML
     private TextField priceField;
     @FXML
@@ -42,12 +42,11 @@ public class NewBookController {
 
     private String imagePath = "";
 
-    // Map для хранения соответствий между именами категорий и их ID
     private Map<String, Integer> categoryMap = new HashMap<>();
 
     @FXML
     private void initialize() {
-        loadCategories(); // Загрузка категорий в ComboBox
+        loadCategories();
     }
 
     private void loadCategories() {
@@ -88,7 +87,6 @@ public class NewBookController {
                 return;
             }
 
-            // Validate the price input
             double price;
             try {
                 price = Double.parseDouble(priceField.getText());
@@ -97,14 +95,11 @@ public class NewBookController {
                 return;
             }
 
-            // Получить ID категории из выбранного значения ComboBox
             String selectedCategoryName = categoryComboBox.getValue();
             int categoryId = categoryMap.get(selectedCategoryName);
 
-            // Получить значение ISBN
             String isbn = isbnField.getText();
 
-            // Создать объект книги и добавить его в базу данных
             Book newBook = new Book(
                     nameField.getText(),
                     authorField.getText(),

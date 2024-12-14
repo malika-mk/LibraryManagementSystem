@@ -42,23 +42,12 @@
                <font>
                   <Font size="20.0" />
                </font></Button>
-            <Button fx:id="bestsellerButton" layoutX="300.0" layoutY="152.0" onAction="#switchToBestseller" style="-fx-text-fill: white; -fx-background-color: transparent;" text="Bestseller">
-               <font>
-                  <Font size="20.0" />
-               </font>
-               <font>
-                  <Font size="20.0" />
-               </font></Button>
             <ChoiceBox fx:id="categoryChoiceBox" layoutX="429.0" layoutY="160.0" prefHeight="26.0" prefWidth="98.0" style="-fx-background-color: transparent;">
                <items>
                   <FXCollections fx:factory="observableArrayList">
                   </FXCollections>
                </items>
             </ChoiceBox>
-            <Button fx:id="blogbutton" layoutX="549.0" layoutY="155.0" onAction="#switchToBlog" style="-fx-text-fill: white; -fx-background-color: transparent;" text="Blog">
-               <font>
-                  <Font size="20.0" />
-               </font></Button>
             <Label fx:id="popularNowLabel" layoutX="71.0" layoutY="567.0" text="Popular Now" textFill="WHITE">
                <font>
                   <Font size="30.0" />

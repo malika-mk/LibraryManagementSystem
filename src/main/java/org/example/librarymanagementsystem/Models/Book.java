@@ -28,10 +28,9 @@ public class Book {
         this.categoryId = categoryId;
         this.price = price;
         this.imagePath = imagePath;
-        this.isbn = isbn; // Установите значение isbn
+        this.isbn = isbn;
     }
 
-    // Добавьте конструктор
     public Book(int id, String name, String author, String description, Image image, int likes, int sales) {
         this.id = id;
         this.name = name;
@@ -42,7 +41,6 @@ public class Book {
         this.sales = sales;
     }
 
-    // Конструктор с byte[]
     public Book(int id, String name, String author, String description, byte[] imageBytes, String isbn) {
         this.id = id;
         this.name = name;
@@ -55,7 +53,6 @@ public class Book {
         }
     }
 
-    // Конструктор для добавления книги
     public Book(String name, String author, String description, int categoryId, double price, String imagePath) {
         this.name = name;
         this.author = author;
@@ -108,11 +105,11 @@ public class Book {
         this.name = name;
         this.author = author;
         this.description = description;
-        this.imagePath = imagePath; // Используем imagePath
+        this.imagePath = imagePath;
         this.isbn = isbn;
         this.price = price;
         this.likes = likes;
-        this.category = category;  // Инициализируем категорию
+        this.category = category;
     }
 
     public Book(int id, String name, String author, String description, String imagePath, String isbn, double price, int likes) {
@@ -120,7 +117,7 @@ public class Book {
         this.name = name;
         this.author = author;
         this.description = description;
-        this.imagePath = imagePath; // Устанавливаем путь к изображению
+        this.imagePath = imagePath;
         this.isbn = isbn;
         this.price = price;
         this.likes = likes;
@@ -137,7 +134,6 @@ public class Book {
         this.sales = sales;
     }
 
-    // Конструктор с Image
     public Book(int id, String name, String author, String description, Image image, String isbn) {
         this.id = id;
         this.name = name;
@@ -147,15 +143,13 @@ public class Book {
         this.isbn = isbn;
     }
 
-    // Геттеры и сеттеры
 
 
     public int getCategoryId() { return categoryId; }
     public void setCategoryId(int categoryId) { this.categoryId = categoryId; }
 
-    private String category; // Для категории
+    private String category;
 
-    // Конструктор, геттеры и сеттеры для category
     public String getCategory() {
         return category;
     }

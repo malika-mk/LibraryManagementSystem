@@ -36,10 +36,10 @@ public class BookDetailsController1 {
 
     private Book currentBook;
 
-    private Book book; // Добавляем поле для хранения текущей книги
+    private Book book;
 
-    private int likes = 0; // Лайки текущей книги
-    private int sales = 0; // Продажи текущей книги
+    private int likes = 0;
+    private int sales = 0;
 
     public void initialize() {
         likeButton.setOnAction(event -> {
@@ -74,7 +74,7 @@ public class BookDetailsController1 {
     }
 
     public void setBook(Book book) {
-        this.book = book; // Сохраняем объект книги для дальнейшего использования
+        this.book = book;
     }
 
     public void setBookDetails(String name, String author, String description, Image bookImage, Book book) {
@@ -83,22 +83,19 @@ public class BookDetailsController1 {
             return;
         }
 
-        this.currentBook = book; // сохраняем объект для дальнейшего использования
+        this.currentBook = book;
         titleLabel.setText(name);
         authorLabel.setText(author);
         descriptionLabel.setText(description);
         bookImageView.setImage(bookImage);
 
-        // Подгружаем данные из базы
         BookDAO bookDAO = new BookDAO();
         int likes = bookDAO.getLikesForBook(book.getId());
         int sales = bookDAO.getSalesForBook(book.getId());
 
-        // Устанавливаем лайки и продажи
         likesLabel.setText("Likes: " + likes);
         salesLabel.setText("Sales: " + sales);
 
-        // Обновляем текущий объект книги
         currentBook.setLikes(likes);
         currentBook.setSales(sales);
     }
@@ -106,10 +103,9 @@ public class BookDetailsController1 {
     @FXML
     private void onLikeButtonClick() {
         if (book != null) {
-            book.setLikes(book.getLikes() + 1); // Увеличиваем лайки в объекте
-            likesLabel.setText("Likes: " + book.getLikes()); // Обновляем UI
+            book.setLikes(book.getLikes() + 1);
+            likesLabel.setText("Likes: " + book.getLikes());
 
-            // Обновляем данные в базе данных
             BookDAO bookDAO = new BookDAO();
             bookDAO.updateLikes(book.getId(), book.getLikes());
         }
@@ -118,10 +114,9 @@ public class BookDetailsController1 {
     @FXML
     private void onSellButtonClick() {
         if (book != null) {
-            book.setSales(book.getSales() + 1); // Увеличиваем продажи в объекте
-            salesLabel.setText("Sales: " + book.getSales()); // Обновляем UI
+            book.setSales(book.getSales() + 1);
+            salesLabel.setText("Sales: " + book.getSales());
 
-            // Обновляем данные в базе данных
             BookDAO bookDAO = new BookDAO();
             bookDAO.updateSales(book.getId(), book.getSales());
         }

@@ -14,7 +14,6 @@ import java.sql.SQLException;
 
 public class BookDAO {
 
-    // Метод для поиска книги по имени
     public Book searchBookByName(String name) {
         String query = "SELECT id, name, author, description, image, isbn FROM public.book WHERE name ILIKE ?";
         try (Connection connection = DatabaseConnection.getConnection();
@@ -35,10 +34,10 @@ public class BookDAO {
                 if (imageBytes != null) {
                     bookImage = new Image(new ByteArrayInputStream(imageBytes));
                 } else {
-                    bookImage = new Image("/path/to/default/image.png"); // Замените на путь к изображению по умолчанию
+                    bookImage = new Image("/path/to/default/image.png");
                 }
 
-                return new Book(id, bookName, author, description, bookImage, isbn); // Используйте конструктор с Image
+                return new Book(id, bookName, author, description, bookImage, isbn);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,7 +45,6 @@ public class BookDAO {
         return null;
     }
 
-    // Метод для получения описания книги по ID
     public String getBookDescription(int bookId) {
         String query = "SELECT description FROM book WHERE id = ?";
         try (Connection connection = DatabaseConnection.getConnection();
@@ -65,7 +63,7 @@ public class BookDAO {
     }
 
     public Book getBook(String title) {
-        String sql = "SELECT * FROM book WHERE name = ?"; // Исправлено на "name" вместо "title"
+        String sql = "SELECT * FROM book WHERE name = ?";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
@@ -77,19 +75,18 @@ public class BookDAO {
                         resultSet.getString("name"),
                         resultSet.getString("author"),
                         resultSet.getString("description"),
-                        resultSet.getInt("category_id"), // Получение categoryId
+                        resultSet.getInt("category_id"),
                         resultSet.getDouble("price"),
                         resultSet.getString("imagepath"),
-                        resultSet.getString("isbn") // Получение ISBN
+                        resultSet.getString("isbn")
                 );
             }
         } catch (SQLException e) {
             System.out.println("Error while retrieving book: " + e.getMessage());
         }
-        return null; // Возвращаем null, если книга не найдена
+        return null;
     }
 
-    // Метод для добавления книги в базу данных
     public void addBook(Book book) {
         String sql = "INSERT INTO book (name, author, description, category_id, price, imagepath, isbn) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -99,10 +96,10 @@ public class BookDAO {
             preparedStatement.setString(1, book.getName());
             preparedStatement.setString(2, book.getAuthor());
             preparedStatement.setString(3, book.getDescription());
-            preparedStatement.setInt(4, book.getCategoryId()); // Использование categoryId вместо имени категории
+            preparedStatement.setInt(4, book.getCategoryId());
             preparedStatement.setDouble(5, book.getPrice());
-            preparedStatement.setString(6, book.getImagePath()); // Сохранение пути изображения
-            preparedStatement.setString(7, book.getIsbn()); // Сохранение ISBN
+            preparedStatement.setString(6, book.getImagePath());
+            preparedStatement.setString(7, book.getIsbn());
 
             preparedStatement.executeUpdate();
             System.out.println("Book added successfully.");
@@ -167,13 +164,10 @@ public class BookDAO {
                 String imagePath = resultSet.getString("imagepath");
                 String isbn = resultSet.getString("isbn");
 
-                // Создаем объект Image
                 Image bookImage = null;
                 if (imageBytes != null) {
-                    // Если данные изображения сохранены в бинарном формате
                     bookImage = new Image(new ByteArrayInputStream(imageBytes));
                 } else if (imagePath != null && !imagePath.isEmpty()) {
-                    // Если указан путь к изображению
                     try {
                         bookImage = new Image("file:" + imagePath);
                     } catch (Exception e) {
@@ -196,7 +190,7 @@ public class BookDAO {
     public ObservableList<Book> getPopularBooks() {
         ObservableList<Book> books = FXCollections.observableArrayList();
 
-        String query = "SELECT id, name, author, description, image, isbn FROM book ORDER BY id LIMIT 10"; // Здесь можно изменить условие
+        String query = "SELECT id, name, author, description, image, isbn FROM book ORDER BY id LIMIT 10";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -297,7 +291,7 @@ public class BookDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0; // Возвращаем 0, если ничего не найдено или произошла ошибка
+        return 0;
     }
 
     public void updateBookLikes(int bookId, int likes) {

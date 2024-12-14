@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import org.example.librarymanagementsystem.HelloApplication;
+import org.example.librarymanagementsystem.Application.HelloApplication;
 import org.example.librarymanagementsystem.Models.Book;
 import org.example.librarymanagementsystem.dao.SalesDAO;
 
@@ -32,7 +32,7 @@ public class AdminController {
     private final SalesDAO salesDAO = new SalesDAO();
 
     @FXML
-    private TableColumn<Book, String> categoryColumn; // Add this to your controller
+    private TableColumn<Book, String> categoryColumn;
 
     @FXML
     public void initialize() {
@@ -40,7 +40,7 @@ public class AdminController {
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category")); // Add this line to bind the category
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
     }
 
     @FXML
@@ -107,15 +107,13 @@ public class AdminController {
     private void onShowMostPopularCategory() {
         String mostPopularCategory = salesDAO.getMostPopularCategory();
         if (mostPopularCategory != null) {
-            // Получаем книги для самой популярной категории
             ObservableList<Book> booksInCategory = salesDAO.getBooksByCategory(mostPopularCategory);
 
-            // Заполняем таблицу
             for (Book book : booksInCategory) {
-                book.setCategory(mostPopularCategory); // Устанавливаем категорию для каждой книги
+                book.setCategory(mostPopularCategory);
             }
 
-            statisticsTable.setItems(booksInCategory); // Отображаем книги в таблице
+            statisticsTable.setItems(booksInCategory);
             System.out.println("Самая популярная категория: " + mostPopularCategory);
         } else {
             System.out.println("Нет данных о категориях.");
@@ -124,19 +122,14 @@ public class AdminController {
 
     @FXML
     private void onShowLeastPopularCategory() {
-        // Get the least popular category from the database
         String leastPopularCategory = salesDAO.getLeastPopularCategory();
 
         if (leastPopularCategory != null) {
-            // Get books in the least popular category
             ObservableList<Book> booksInCategory = salesDAO.getBooksByCategory(leastPopularCategory);
 
-            // Set category for each book in the list
             for (Book book : booksInCategory) {
-                book.setCategory(leastPopularCategory); // Ensure category is set
+                book.setCategory(leastPopularCategory);
             }
-
-            // Set the items for the statistics table
             statisticsTable.setItems(booksInCategory);
 
             System.out.println("Самая непопулярная категория: " + leastPopularCategory);

@@ -15,10 +15,8 @@ public class Main {
             if (connection != null) {
                 System.out.println("Connection established!");
 
-                // Укажите путь к изображению, которое вы хотите добавить
                 File imageFile = new File("src/main/resources/images/Peace and.jpeg");
 
-                // Сохранение изображения в базу данных для книги с ID 1
                 saveImage(connection, 12, imageFile);
 
             } else {
@@ -41,11 +39,9 @@ public class Main {
         try (FileInputStream inputStream = new FileInputStream(imageFile);
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            // Устанавливаем параметры
             preparedStatement.setBinaryStream(1, inputStream, (int) imageFile.length());
             preparedStatement.setInt(2, bookId);
 
-            // Выполняем запрос
             int rowsUpdated = preparedStatement.executeUpdate();
             if (rowsUpdated > 0) {
                 System.out.println("Image updated successfully for book ID: " + bookId);

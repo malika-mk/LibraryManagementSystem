@@ -4,13 +4,11 @@ public class Category {
     private int id;
     private String name;
 
-    // Конструктор
     public Category(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    // Геттеры и сеттеры
     public int getId() {
         return id;
     }

@@ -38,7 +38,7 @@ public class SalesDAO {
             preparedStatement.setString(3, book.getDescription());
             preparedStatement.setString(4, book.getCategory());
             preparedStatement.setDouble(5, book.getPrice());
-            preparedStatement.setString(6, book.getImagePath());  // Save the image path
+            preparedStatement.setString(6, book.getImagePath());
 
             preparedStatement.executeUpdate();
             System.out.println("Book added successfully.");
@@ -68,7 +68,7 @@ public class SalesDAO {
         } catch (SQLException e) {
             System.out.println("Error while retrieving book: " + e.getMessage());
         }
-        return null;  // Return null if the book is not found
+        return null;
     }
 
     public Book getMostLikedBook() {
@@ -95,7 +95,7 @@ public class SalesDAO {
                         resultSet.getString("isbn"),
                         resultSet.getDouble("price"),
                         resultSet.getInt("likes"),
-                        resultSet.getString("categoryname")  // Добавляем категорию
+                        resultSet.getString("categoryname")
                 );
             }
         } catch (SQLException e) {
@@ -128,7 +128,7 @@ public class SalesDAO {
                         resultSet.getString("isbn"),
                         resultSet.getDouble("price"),
                         resultSet.getInt("sales"),
-                        resultSet.getString("categoryname") // Передаем категорию книги
+                        resultSet.getString("categoryname")
                 );
             }
         } catch (SQLException e) {
@@ -194,7 +194,7 @@ public class SalesDAO {
                         resultSet.getString("isbn"),
                         resultSet.getDouble("price"),
                         resultSet.getInt("sales"),
-                        resultSet.getString("categoryname") // Передаем категорию книги
+                        resultSet.getString("categoryname")
                 );
             }
         } catch (SQLException e) {
@@ -251,14 +251,12 @@ public class SalesDAO {
                 int sales = resultSet.getInt("sales");
                 String isbn = resultSet.getString("isbn");
 
-                // Проверка на изображение
                 Image bookImage = null;
-                String imagePath = resultSet.getString("image"); // Строка с путем к изображению
+                String imagePath = resultSet.getString("image");
                 if (imagePath != null && !imagePath.isEmpty()) {
-                    bookImage = new Image("file:" + imagePath); // Загрузка изображения по пути
+                    bookImage = new Image("file:" + imagePath);
                 }
 
-                // Создание книги и добавление в список
                 books.add(new Book(id, name, author, description, bookImage, isbn, price, sales));
             }
         } catch (SQLException e) {

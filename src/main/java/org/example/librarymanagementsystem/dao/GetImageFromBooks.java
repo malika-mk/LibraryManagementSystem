@@ -27,6 +27,6 @@ public class GetImageFromBooks {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null; // Если изображения нет, возвращаем null
+        return null;
     }
 }
