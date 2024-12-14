@@ -53,17 +53,20 @@ public class LibraryController {
 
     @FXML
     private TextField searchField;
- // или VBox, если это VBox
-    @FXML
-    private ScrollPane scrollPane; // если это ScrollPane, в котором находится booksGrid
 
     @FXML
-    private VBox contentBox; // Контейнер для отображения результатов
+    private ImageView bookImageView;
+
+    @FXML
+    private ScrollPane scrollPane;
+
+    @FXML
+    private VBox contentBox;
 
     private ObservableList<Book> filteredList = FXCollections.observableArrayList();
 
     @FXML
-    private Button searchButton; // Кнопка-кружок
+    private Button searchButton;
 
     @FXML
     private void onSearchButtonClick() {
@@ -76,16 +79,13 @@ public class LibraryController {
             if (foundBook != null) {
                 System.out.println("Книга найдена: " + foundBook.getName());
 
-                // Скрываем "Popular Now"
-                booksGrid.setVisible(false); // Скрыть GridPane
-                booksGrid.setManaged(false); // Убрать из компоновки
+                booksGrid.setVisible(false);
+                booksGrid.setManaged(false);
 
-                // Показываем результаты поиска
                 displaySearchResult(foundBook);
             } else {
                 System.out.println("Книга не найдена");
 
-                // Показываем "Popular Now", если результатов нет
                 booksGrid.setVisible(true);
                 booksGrid.setManaged(true);
 
@@ -93,8 +93,6 @@ public class LibraryController {
             }
         } else {
             System.out.println("Поле поиска пустое");
-
-            // Восстанавливаем отображение "Popular Now"
             booksGrid.setVisible(true);
             booksGrid.setManaged(true);
 
@@ -104,38 +102,28 @@ public class LibraryController {
 
     @FXML
     public void initialize() {
-        // Устанавливаем стиль для categoryChoiceBox
         categoryChoiceBox.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
 
-        // Настройка минимальной и максимальной ширины для categoryChoiceBox
-        categoryChoiceBox.setMinWidth(150);  // Минимальная ширина
-        categoryChoiceBox.setMaxWidth(Double.MAX_VALUE);  // Максимальная ширина (растягивается на доступную ширину)
+        categoryChoiceBox.setMinWidth(150);
+        categoryChoiceBox.setMaxWidth(Double.MAX_VALUE);
 
         loadPopularBooks();
-
-        // Добавляем категории в ChoiceBox
         categoryChoiceBox.getItems().addAll("Romance novel", "Fantasy", "Adventure fiction", "Horror");
 
-        // Устанавливаем начальное значение
         categoryChoiceBox.setValue("Category");
 
-        // Добавляем обработчик выбора категории
         categoryChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 displayBooksByCategory(newValue);
             }
         });
 
-        // Обработка нажатия Enter в поле поиска
         searchField.setOnAction(event -> {
-            // Выполняем поиск только по нажатию Enter
             onSearch();
         });
 
-        // Слушатель изменений текста в поле поиска
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.isEmpty()) {
-                // Если поле поиска пустое, показываем секцию "Popular Now"
                 booksGrid.setVisible(true);
                 booksGrid.setManaged(true);
                 searchResultsBox.setVisible(false);
@@ -143,24 +131,8 @@ public class LibraryController {
                 popularNowLabel.setVisible(true);
             }
         });
-
-        // Привязываем ширину элемента (например, GridPane или VBox)
         booksGrid.prefWidthProperty().bind(scrollPane.widthProperty()); // Привязка ширины для адаптации к размеру окна
     }
-
-//    private void switchToCategoryPage(String category) {
-//        try {
-//            Stage stage = (Stage) categoryChoiceBox.getScene().getWindow();
-//
-//            // Загружаем FXML-файл для выбранной категории
-//            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/librarymanagementsystem/view/Fantasy.fxml"));
-//            Scene scene = new Scene(fxmlLoader.load(), 800, 1000);
-//            stage.setScene(scene);
-//            stage.show();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     @FXML
     void switchToBestseller() throws IOException {
@@ -215,16 +187,13 @@ public class LibraryController {
         stage.setScene(scene);
     }
 
-    @FXML
-    private ImageView bookImageView;
-
-    // Метод поиска
     private void onSearch() {
         String query = searchField.getText().trim();
 
         if (query.isEmpty()) {
+            // Если поле поиска пустое, показать "Popular Now" и скрыть результаты поиска
             System.out.println("Поле поиска пустое. Показать дефолтное содержимое.");
-            displayDefaultContent();
+            displayDefaultContent(); // Показываем дефолтный контент
             return;
         }
 
@@ -236,7 +205,7 @@ public class LibraryController {
             if (result != null) {
                 System.out.println("Книга найдена: " + result.getName());
 
-                // Получаем изображение из базы
+                // Получаем изображение из базы данных
                 Object imageObject = result.getImage();
                 Image bookImage;
                 if (imageObject instanceof byte[]) {
@@ -247,24 +216,32 @@ public class LibraryController {
                     bookImage = (Image) imageObject;
                 }
 
-                // Устанавливаем изображение
+                // Устанавливаем изображение в объект книги
                 result.setImage(bookImage);
 
-                // Получаем описание
+                // Получаем описание книги
                 String description = bookDAO.getBookDescription(result.getId());
                 result.setDescription(description);
 
-                // Обновляем UI
+                // Обновляем UI: скрываем "Popular Now" и показываем результаты поиска
                 booksGrid.setVisible(false);
                 booksGrid.setManaged(false);
                 popularNowLabel.setVisible(false);
                 popularNowLabel.setManaged(false);
 
+                // Отображаем результат поиска
                 displaySearchResult(result, bookImage);
                 loadBookDetails(result, bookImage, description);
             } else {
                 System.out.println("Книга не найдена.");
-                displayNoResult();
+
+                // Если книга не найдена, показываем "Popular Now"
+                booksGrid.setVisible(true); // Показываем секцию "Popular Now"
+                booksGrid.setManaged(true);
+                popularNowLabel.setVisible(true);
+                popularNowLabel.setManaged(true);
+
+                displayNoResult(); // Отображаем сообщение о том, что книга не найдена
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -277,10 +254,8 @@ public class LibraryController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanagementsystem/view/BookDetails.fxml"));
             Parent bookDetailsRoot = loader.load();
 
-            // Получаем доступ к контроллеру
             BookDetailsController1 bookDetailsController = loader.getController();
 
-            // Передаем данные в контроллер
             bookDetailsController.setBookDetails(
                     book.getName(),
                     book.getAuthor(),
@@ -289,7 +264,6 @@ public class LibraryController {
                     book
             );
 
-            // Создаем новое окно для отображения деталей книги
             Stage stage = new Stage();
             stage.setTitle("Book Details");
             stage.setScene(new Scene(bookDetailsRoot));
@@ -330,7 +304,6 @@ public class LibraryController {
         bookDetailsBox.setSpacing(10);
         bookDetailsBox.setAlignment(Pos.CENTER);
 
-        // Добавляем обработчик клика
         bookDetailsBox.setOnMouseClicked(event -> {
             System.out.println("Клик на книге: " + book.getName());
             openBookDetailsPage(book, bookImage);  // bookImage - это javafx.scene.image.Image
@@ -344,7 +317,7 @@ public class LibraryController {
 
     // Запрос к базе данных для поиска книги
     public Book searchBookByName(String name) {
-        String query = "SELECT id, name, author, description, image, isbn FROM public.book WHERE name ILIKE ?";
+        String query = "SELECT id, name, author, description, image, imagepath, isbn FROM public.book WHERE name ILIKE ?";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -357,17 +330,24 @@ public class LibraryController {
                 String author = resultSet.getString("author");
                 String description = resultSet.getString("description");
                 byte[] imageBytes = resultSet.getBytes("image");
+                String imagePath = resultSet.getString("imagepath");
                 String isbn = resultSet.getString("isbn");
 
-                // Преобразуем байты в объект Image
                 Image bookImage = null;
                 if (imageBytes != null) {
                     bookImage = new Image(new ByteArrayInputStream(imageBytes));
+                } else if (imagePath != null && !imagePath.isEmpty()) {
+                    try {
+                        // Загружаем изображение по пути из imagePath
+                        bookImage = new Image("file:" + imagePath);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Ошибка загрузки изображения: " + e.getMessage());
+                        bookImage = new Image("/src/main/resources/images._.jpeg");
+                    }
                 } else {
-                    bookImage = new Image("/path/to/default/image.png");
+                    bookImage = new Image("/src/main/resources/images._.jpeg");
                 }
 
-                // Возвращаем объект Book с использованием конструктора с Image
                 return new Book(id, bookName, author, description, bookImage, isbn);
             }
         } catch (SQLException e) {
@@ -375,7 +355,6 @@ public class LibraryController {
         }
         return null;
     }
-    // Метод для отображения результатов поиска
     private void displaySearchResult(Book book) {
         searchResultsBox.getChildren().clear();
 
@@ -384,8 +363,6 @@ public class LibraryController {
 
         Label authorLabel = new Label("Автор: " + book.getAuthor());
         authorLabel.setStyle("-fx-font-size: 16px;");
-
-        // Получаем изображение книги
         javafx.scene.image.Image bookImage = book.getImage();
 
         ImageView bookImageView = new ImageView(bookImage);
@@ -401,7 +378,7 @@ public class LibraryController {
         // Добавляем обработчик клика
         bookDetailsBox.setOnMouseClicked(event -> {
             System.out.println("Клик на книге: " + book.getName());
-            openBookDetailsPage(book, bookImage); // Передаем книгу и изображение
+            openBookDetailsPage(book, bookImage);
         });
 
         searchResultsBox.getChildren().add(bookDetailsBox);
@@ -414,11 +391,7 @@ public class LibraryController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanagementsystem/view/BookDetails.fxml"));
             Parent bookDetailsRoot = loader.load();
-
-            // Получаем контроллер
             BookDetailsController1 controller = loader.getController();
-
-            // Передаем данные в контроллер
             controller.setBookDetails(
                     book.getName(),
                     book.getAuthor(),
@@ -426,8 +399,6 @@ public class LibraryController {
                     bookImage,
                     book
             );
-
-            // Создаем окно для отображения
             Stage stage = new Stage();
             stage.setTitle("Book Details");
             stage.setScene(new Scene(bookDetailsRoot));
@@ -449,7 +420,6 @@ public class LibraryController {
 
     @FXML private Button addBookButton;
 
-    // Метод для открытия окна добавления новой книги
     @FXML
     private void openAddBookWindow() {
         try {
@@ -467,27 +437,19 @@ public class LibraryController {
 
     private void openBookDetailsPage(Book book) {
         try {
-            // Получаем изображение из объекта Book
             javafx.scene.image.Image bookImage;
             if (book.getImage() instanceof javafx.scene.image.Image) {
                 bookImage = (javafx.scene.image.Image) book.getImage();
             } else {
-                // Устанавливаем изображение по умолчанию, если изображение отсутствует
                 bookImage = new javafx.scene.image.Image("/path/to/default/image.png");
             }
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/librarymanagementsystem/view/BookDetails.fxml"));
             Parent bookDetailsRoot = loader.load();
-
-            // Получаем контроллер
-
             BookDetailsController1 controller = loader.getController();
-            controller.setBook(book); // Устанавливаем книгу
-
-            // Передаем данные в контроллер
+            controller.setBook(book);
             controller.setBookDetails(book.getName(), book.getAuthor(), book.getDescription(), book.getImage(), book);
 
-            // Создаем окно для отображения
             Stage stage = new Stage();
             stage.setTitle("Book Details");
             stage.setScene(new Scene(bookDetailsRoot));
@@ -499,19 +461,19 @@ public class LibraryController {
     }
 
     private void displayBooksByCategory(String category) {
-        booksGrid.getChildren().clear(); // Очищаем GridPane перед добавлением новых элементов
+        booksGrid.getChildren().clear();
 
-        ObservableList<Book> books = bookDAO.getBooksByCategory(category); // Получаем книги по категории
+        ObservableList<Book> books = bookDAO.getBooksByCategory(category);
 
         int column = 0;
         int row = 0;
 
         for (Book book : books) {
-            VBox bookItem = createBookItem(book); // Создаем элемент книги
+            VBox bookItem = createBookItem(book);
             booksGrid.add(bookItem, column, row);
 
             column++;
-            if (column == 4) { // Переход на новую строку после 4 колонок
+            if (column == 4) {
                 column = 0;
                 row++;
             }
@@ -541,16 +503,12 @@ public class LibraryController {
 
     @FXML
     private void goToHome() {
-        // Убедитесь, что GridPane и Label видны
         booksGrid.setVisible(true);
         booksGrid.setManaged(true);
         popularNowLabel.setVisible(true);
         popularNowLabel.setManaged(true);
 
-        // Очистите текущие результаты поиска
         searchResultsBox.getChildren().clear();
-
-        // Проверьте, загружаются ли книги заново (добавьте сюда метод для отображения популярного контента)
         loadPopularBooks();
 
         System.out.println("Home button clicked and content set to Popular Now");
@@ -594,7 +552,6 @@ public class LibraryController {
                 if (imageBytes != null) {
                     image = new Image(new ByteArrayInputStream(imageBytes));
                 }
-
                 popularBooks.add(new Book(id, name, author, description, image, likes, sales));
             }
         } catch (SQLException e) {
