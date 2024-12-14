@@ -26,6 +26,51 @@ public class SalesDAO {
             e.printStackTrace();
         }
     }
+
+    public void addBook(Book book) {
+        String sql = "INSERT INTO book (name, author, description, category, price, image_path) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, book.getName());
+            preparedStatement.setString(2, book.getAuthor());
+            preparedStatement.setString(3, book.getDescription());
+            preparedStatement.setString(4, book.getCategory());
+            preparedStatement.setDouble(5, book.getPrice());
+            preparedStatement.setString(6, book.getImagePath());  // Save the image path
+
+            preparedStatement.executeUpdate();
+            System.out.println("Book added successfully.");
+        } catch (SQLException e) {
+            System.out.println("Error while adding book: " + e.getMessage());
+        }
+    }
+
+    public Book getBook(String title) {
+        String sql = "SELECT * FROM book WHERE name = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, title);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return new Book(
+                        resultSet.getString("name"),
+                        resultSet.getString("author"),
+                        resultSet.getString("description"),
+                        resultSet.getString("category"),
+                        resultSet.getDouble("price"),
+                        resultSet.getString("image_path")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while retrieving book: " + e.getMessage());
+        }
+        return null;  // Return null if the book is not found
+    }
+
     public Book getMostLikedBook() {
         String query = """
     SELECT b.id, b.name, b.author, b.description, b.imagepath, b.isbn, b.price, b.likes, c.categoryname

@@ -6,7 +6,6 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.ChoiceBox?>
 
 <VBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.librarymanagementsystem.Controllers.AdminController">
     <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Панель Администратора" />
@@ -20,9 +19,6 @@
         <Button onAction="#onShowLeastPopularCategory" text="Самая непопулярная категория" />
         <Label fx:id="categoryLabel" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
     </HBox>
-
-    <!-- Category selection -->
-    <ChoiceBox fx:id="categoryChoiceBox" />
 
     <TableView fx:id="statisticsTable" style="-fx-pref-height: 300px; -fx-pref-width: 600px;">
         <columns>

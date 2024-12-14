@@ -18,7 +18,18 @@ public class Book {
     private long totalSales;// Путь к изображению// Цена
     private int sales;
     private String value;
+    private int categoryId;
 
+
+    public Book(String name, String author, String description, int categoryId, double price, String imagePath, String isbn) {
+        this.name = name;
+        this.author = author;
+        this.description = description;
+        this.categoryId = categoryId;
+        this.price = price;
+        this.imagePath = imagePath;
+        this.isbn = isbn; // Установите значение isbn
+    }
 
     // Добавьте конструктор
     public Book(int id, String name, String author, String description, Image image, int likes, int sales) {
@@ -44,6 +55,16 @@ public class Book {
         }
     }
 
+    // Конструктор для добавления книги
+    public Book(String name, String author, String description, int categoryId, double price, String imagePath) {
+        this.name = name;
+        this.author = author;
+        this.description = description;
+        this.categoryId = categoryId;
+        this.price = price;
+        this.imagePath = imagePath;
+    }
+
     public Book(int id, String name, String author, String description, String imagePath, double price, int likes, long totalSales) {
         this.id = id;
         this.name = name;
@@ -53,6 +74,15 @@ public class Book {
         this.price = price;
         this.likes = likes;
         this.totalSales = totalSales;
+    }
+
+    public Book(String name, String author, String description, String imagePath, double price, String category) {
+        this.category = category;
+        this.name = name;
+        this.author = author;
+        this.description = description;
+        this.imagePath = imagePath;
+        this.price = price;
     }
 
     public Book(int id, String name, String author,double price) {
@@ -118,6 +148,10 @@ public class Book {
     }
 
     // Геттеры и сеттеры
+
+
+    public int getCategoryId() { return categoryId; }
+    public void setCategoryId(int categoryId) { this.categoryId = categoryId; }
 
     private String category; // Для категории
 

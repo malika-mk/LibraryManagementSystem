@@ -64,54 +64,50 @@ public class BookDAO {
         return null;
     }
 
-    public Book getBookById(int bookId) {
-        String query = "SELECT id, name, author, description, image, isbn, likes, sales FROM public.book WHERE id = ?";
+    public Book getBook(String title) {
+        String sql = "SELECT * FROM book WHERE name = ?"; // Исправлено на "name" вместо "title"
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            statement.setInt(1, bookId);
-            ResultSet resultSet = statement.executeQuery();
+            preparedStatement.setString(1, title);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                String author = resultSet.getString("author");
-                String description = resultSet.getString("description");
-                byte[] imageBytes = resultSet.getBytes("image");
-                String isbn = resultSet.getString("isbn");
-                int likes = resultSet.getInt("likes");
-                int sales = resultSet.getInt("sales");
-
-                Image bookImage = (imageBytes != null) ? new Image(new ByteArrayInputStream(imageBytes)) : null;
-
-                return new Book(id, name, author, description, bookImage, isbn, likes, sales);
+                return new Book(
+                        resultSet.getString("name"),
+                        resultSet.getString("author"),
+                        resultSet.getString("description"),
+                        resultSet.getInt("category_id"), // Получение categoryId
+                        resultSet.getDouble("price"),
+                        resultSet.getString("imagepath"),
+                        resultSet.getString("isbn") // Получение ISBN
+                );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error while retrieving book: " + e.getMessage());
         }
-        return null;
+        return null; // Возвращаем null, если книга не найдена
     }
 
     // Метод для добавления книги в базу данных
     public void addBook(Book book) {
-        String query = "INSERT INTO book (name, author, description, image) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO book (name, author, description, category_id, price, imagepath, isbn) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, book.getName());
-            statement.setString(2, book.getAuthor());
-            statement.setString(3, book.getDescription());
+            preparedStatement.setString(1, book.getName());
+            preparedStatement.setString(2, book.getAuthor());
+            preparedStatement.setString(3, book.getDescription());
+            preparedStatement.setInt(4, book.getCategoryId()); // Использование categoryId вместо имени категории
+            preparedStatement.setDouble(5, book.getPrice());
+            preparedStatement.setString(6, book.getImagePath()); // Сохранение пути изображения
+            preparedStatement.setString(7, book.getIsbn()); // Сохранение ISBN
 
-            // Проверка и преобразование изображения в байты
-            if (book.getImage() instanceof javafx.scene.image.Image) {
-                statement.setBytes(4, ImageUtils.convertImageToBytes((javafx.scene.image.Image) book.getImage()));
-            } else {
-                statement.setBytes(4, null); // Если изображение отсутствует
-            }
-
-            statement.executeUpdate();
+            preparedStatement.executeUpdate();
+            System.out.println("Book added successfully.");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error while adding book: " + e.getMessage());
         }
     }
 
