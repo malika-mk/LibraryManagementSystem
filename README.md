@@ -8,7 +8,7 @@
 3. [Team Members List](#team-members-list)
 4. [Roles of Group Members](#roles-of-group-members)
 5. [Screenshots](#screenshots)
-6. [Sample Data](#sample-data)
+6. [Database](#database)
 7. [UML Class Diagram](#uml-class-diagram)
 8. [Weekly Meeting Documentation](#weekly-meeting-documentation)
 9. [Unit Test Cases](#unit-test-cases)
