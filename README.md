@@ -99,6 +99,6 @@ Unit test cases for the project will be included to ensure the proper functional
 
 ## Presentation
 
-[A presentation summarizing the project, its features, and its progress will be provided to stakeholders.](https://www.canva.com/design/DAGZRj6AOIg/VqhCkkI5PhZrAzIpBSGyCQ/edit?utm_content=DAGZRj6AOIg&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+[https://www.canva.com/design/DAGZRj6AOIg/VqhCkkI5PhZrAzIpBSGyCQ/edit?utm_content=DAGZRj6AOIg&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton](https://www.canva.com/design/DAGZRj6AOIg/VqhCkkI5PhZrAzIpBSGyCQ/edit?utm_content=DAGZRj6AOIg&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 ---
